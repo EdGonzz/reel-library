@@ -1,0 +1,19 @@
+---
+interface Props {
+  img: string;
+  title: string;
+  average: number;
+  alt: string;
+  id: number;
+}
+
+const { img, title, average, alt, id } = Astro.props;
+---
+
+<a class="embla__slide" href={`/movies/${id}`}>
+  <img class="embla__slide__img" src={img} alt={alt} />
+  <div class="embla__slide__info">
+    <h2 class="embla__slide__title">{title}</h2>
+    <p class="embla__slide__average">{`${average.toFixed(1)}⭐`}</p>
+  </div>
+</a>
