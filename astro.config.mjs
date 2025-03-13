@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 
@@ -7,5 +7,13 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
+  },
+  env: {
+    schema: {
+      API_TOKEN: envField.string({ context: 'server', access: 'secret' }),
+      PUBLIC_TRENDING_MOVIES: envField.string({ context: 'server', access: 'public' }),
+      PUBLIC_CATEGORIES_MOVIES: envField.string({ context: 'server', access: 'public' }),
+      PUBLIC_DISCOVER_MOVIES: envField.string({ context: 'client', access: 'public' })
+    }
   }
 });
