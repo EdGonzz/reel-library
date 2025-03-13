@@ -1,0 +1,70 @@
+---
+import Search from "@/components/svg/Search.astro";
+---
+
+<nav class="w-full h-16 flex justify-between items-center bg-bg-100 px-4">
+  <a
+    id="logo"
+    href="/"
+    class="text-xl font-bold text-primary-100 -skew-x-[22deg]">ReelLibrary</a
+  >
+  <div
+    id="input-container"
+    class="w-11 h-11 bg-bg-300/30 rounded-full flex justify-between items-center transition-[width] ease-in-out duration-600 border-1 border-transparent"
+  >
+    <div>
+      <search>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search"
+          class="w-0 outline-none"
+        />
+      </search>
+    </div>
+    <button
+      id="search-button"
+      class="w-11 h-11 bg-bg-300/30 rounded-full content-center"
+    >
+      <Search class="w-8 h-8 mx-auto" />
+    </button>
+  </div>
+</nav>
+
+<script>
+  let $inputContainer = document.getElementById(
+    "input-container"
+  ) as HTMLDivElement;
+  let $searchInput = document.getElementById(
+    "search-input"
+  ) as HTMLInputElement;
+  let $searchButton = document.getElementById(
+    "search-button"
+  ) as HTMLButtonElement;
+
+  $searchButton.addEventListener("click", () => {
+    $inputContainer.classList.toggle("show-input");
+    $searchInput.classList.toggle("search-input");
+    if (!$searchInput.classList.contains("pl-2")) {
+      $searchInput.classList.add("pl-2");
+      $searchInput.focus();
+    } else {
+      $searchInput.classList.remove("pl-2");
+      $searchInput.blur();
+    }
+  });
+</script>
+
+<style>
+  .show-input {
+    border-color: var(--color-text-200);
+    width: 228px;
+    transition: width 0.6s ease-in-out;
+    transition-property: all;
+  }
+  .search-input {
+    width: 180px;
+    transition: width 0.6s ease-in-out;
+    transition-delay: 0.8s;
+  }
+</style>
