@@ -1,7 +1,7 @@
-import { PUBLIC_CATEGORIES_MOVIES } from "astro:env/server";
 import { API_TOKEN } from "astro:env/server";
+import { PUBLIC_DISCOVER_MOVIES } from "astro:env/server";
 
-export async function getCategories() {
+export async function getMoviesByCategory(categoryID: string = "") {
   const options = {
     method: "GET",
     headers: {
@@ -9,8 +9,16 @@ export async function getCategories() {
       Authorization: API_TOKEN ?? "",
     },
   };
+
+  const paramsConfig = {
+    with_genres: categoryID,
+    sort_by: "popularity.desc",
+  };
+
+  const params = new URLSearchParams(paramsConfig).toString();
+
   try {
-    const response = await fetch(PUBLIC_CATEGORIES_MOVIES, options);
+    const response = await fetch(`${PUBLIC_DISCOVER_MOVIES}${params}`, options);
     const data = await response.json();
 
     if (!response.ok) {

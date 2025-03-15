@@ -1,0 +1,101 @@
+---
+import { type CATEGORIES_MOVIES } from "@/types/apiCategoriesMovies";
+import { getCategories } from "@/services/getCategories";
+import CategoriesButtons from "@/components/CategoriesButtons.astro";
+import MoviesContainer from "@/components/MoviesContainer.astro";
+
+const data = (await getCategories()) as CATEGORIES_MOVIES;
+const categories = data.genres;
+
+export const prerender = true;
+---
+
+<section id="categories" class="bg-bg-300 h-auto w-full px-4 flex flex-col">
+  <header class="w-full h-16 flex items-center">
+    <h2 class="text-2xl font-bold">Categories</h2>
+  </header>
+  <div id="genres-container" class="flex flex-wrap flex-row gap-1 mb-2">
+    {
+      categories.map((category) => (
+        <CategoriesButtons id={`${category.id}`} text={category.name} />
+      ))
+    }
+  </div>
+  <div id="movies-container" class="w-full h-auto flex flex-col px-4">
+    <MoviesContainer slot="fallback" />
+  </div>
+</section>
+
+<script>
+  import type { Moviesbycategory } from "@/types/apiMovieByCategory";
+  const genresContainer = document.getElementById(
+    "genres-container"
+  ) as HTMLElement;
+
+  genresContainer.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+
+    if (target.tagName === "BUTTON") {
+      const categoryID = target.id;
+      const categoryName = target.textContent?.trim();
+
+      window.location.hash = `#category=${categoryID}-${categoryName}`;
+    }
+  });
+
+  window.addEventListener("hashchange", () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const [hashCategory, hashId] = hash.split("=");
+      const [categoryID, categoryName] = hashId.split("-");
+      (async () => {
+        const movies = await getMoviesByCategory(`${categoryID}`);
+        printMovies(movies, `${categoryName}`);
+      })();
+    }
+  });
+
+  async function getMoviesByCategory(categoryID: string) {
+    try {
+      const response = await fetch(`/api/${categoryID}.json`);
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function printMovies(movies: Moviesbycategory, CategoriName: string) {
+    const moviesContainer = document.getElementById(
+      "movies-container"
+    ) as HTMLElement;
+
+    moviesContainer.innerHTML = `
+      <header class="w-full h-16 flex items-center">
+        <h2 class="text-2xl font-bold">${CategoriName} Movies</h2>
+      </header>
+      <div class="grid grid-cols-2 gap-6 w-full">
+        ${movies.results
+          .map(
+            (movie) => `
+          <a href="/movie/${movie.id}">
+            <article class="flex flex-col gap-3">
+              <img
+                src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+                alt="${movie.title}"
+                class="w-full object-contain rounded-lg"
+              />
+              <h3 class="text-xl font-bold text-balance">${movie.title}</h3>
+            </article>
+          </a>
+        `
+          )
+          .join("")}
+      </div>
+    `;
+  }
+</script>
