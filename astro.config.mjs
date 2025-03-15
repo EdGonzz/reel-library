@@ -13,7 +13,7 @@ export default defineConfig({
       API_TOKEN: envField.string({ context: 'server', access: 'secret' }),
       PUBLIC_TRENDING_MOVIES: envField.string({ context: 'server', access: 'public' }),
       PUBLIC_CATEGORIES_MOVIES: envField.string({ context: 'server', access: 'public' }),
-      PUBLIC_DISCOVER_MOVIES: envField.string({ context: 'client', access: 'public' })
+      PUBLIC_DISCOVER_MOVIES: envField.string({ context: 'server', access: 'public' })
     }
   }
 });
