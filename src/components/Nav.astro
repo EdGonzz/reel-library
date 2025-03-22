@@ -30,21 +30,37 @@ import Search from "@/components/svg/Search.astro";
     </button>
   </div>
 </nav>
+<div id="modal" class="hidden relative">
+  <div
+    id="search-container"
+    class="absolute z-30 top-0 left-0 w-full h-[540px] overflow-y-scroll flex flex-col gap-1 p-1"
+  >
+  </div>
+</div>
 
 <script>
-  let $inputContainer = document.getElementById(
+  import type { QueryMovies } from "@/types/apiQueryMovies";
+  const $inputContainer = document.getElementById(
     "input-container"
   ) as HTMLDivElement;
-  let $searchInput = document.getElementById(
+  const $searchInput = document.getElementById(
     "search-input"
   ) as HTMLInputElement;
-  let $searchButton = document.getElementById(
+  const $searchButton = document.getElementById(
     "search-button"
   ) as HTMLButtonElement;
+  const $modal = document.getElementById("modal") as HTMLDivElement;
+  const $searchContainer = document.getElementById(
+    "search-container"
+  ) as HTMLElement;
+
+  let debounceTimer = 0;
 
   $searchButton.addEventListener("click", () => {
     $inputContainer.classList.toggle("show-input");
     $searchInput.classList.toggle("search-input");
+    $modal.classList.toggle("hidden");
+
     if (!$searchInput.classList.contains("pl-2")) {
       $searchInput.classList.add("pl-2");
       $searchInput.focus();
@@ -53,17 +69,78 @@ import Search from "@/components/svg/Search.astro";
       $searchInput.blur();
     }
   });
+
+  $searchInput.addEventListener("keyup", (e) => {
+    clearTimeout(debounceTimer);
+    let query = $searchInput.value;
+
+    if (query.length < 2) {
+      $searchContainer.innerHTML = ``;
+      return;
+    }
+
+    if (query.length > 2) {
+      debounceTimer = setTimeout(async () => {
+        try {
+          const movies = await getMovies(query);
+          if (movies) {
+            printMovies(movies);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }, 500);
+    }
+  });
+
+  async function getMovies(query: string) {
+    try {
+      const response = await fetch(`/api/query/${query}.json`);
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function printMovies(movies: QueryMovies) {
+    $searchContainer.innerHTML = `
+      ${movies.results
+        .map(
+          (movie) => `
+          <a href="/movie/${movie.id}">
+            <article class="flex flex-row items-center gap-3 rounded-lg border-l-8 border-l-transparent bg-bg-300 hover:border-l-primary-100 transition-all ease-in-out duration-200">
+              <img
+                src="https://image.tmdb.org/t/p/w200${movie.poster_path}"
+                alt="${movie.title}"
+                class="w-16 h-auto aspect-auto object-contain"
+              />
+              <div class="flex flex-col gap-1">
+                <h3 class="text-xl font-bold text-balance">${movie.title}</h3>
+                <p class="text-sm text-text-200">${movie.vote_average.toFixed(2)}⭐</p>
+              </div>
+            </article>
+          </a>
+        `
+        )
+        .join("")}
+    `;
+  }
 </script>
 
 <style>
   .show-input {
     border-color: var(--color-text-200);
-    width: 228px;
+    width: 200px;
     transition: width 0.6s ease-in-out;
     transition-property: all;
   }
   .search-input {
-    width: 180px;
+    width: 150px;
     transition: width 0.6s ease-in-out;
     transition-delay: 0.8s;
   }
