@@ -12,8 +12,8 @@ export async function getMoviesByCategory(categoryID: string = "") {
 
   const paramsConfig = {
     with_genres: categoryID,
-    sort_by: "popularity.desc",
-  };
+    sort_by: "vote_count.desc",
+  } as any;
 
   const params = new URLSearchParams(paramsConfig).toString();
 
