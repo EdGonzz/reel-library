@@ -16,5 +16,10 @@ export default defineConfig({
       PUBLIC_DISCOVER_MOVIES: envField.string({ context: 'server', access: 'public' }),
       PUBLIC_SEARCH_MOVIES: envField.string({ context: 'server', access: 'public' })
     }
+  },
+  experimental: {
+    svg: {
+      mode: 'sprite'
+    }
   }
 });
