@@ -45,7 +45,7 @@ export const prerender = true;
 
   window.addEventListener("hashchange", () => {
     const hash = window.location.hash;
-    if (hash) {
+    if (hash && hash.startsWith("#category")) {
       const [hashCategory, hashId] = hash.split("=");
       const [categoryID, categoryName] = hashId.split("-");
       (async () => {

@@ -1,0 +1,49 @@
+---
+import { type DetailsMovie } from "@/types/apiDetailsMovies";
+import { type ReleaseDate, type Result } from "@/types/apiReleaseDate";
+import { getDetailsMovie } from "@/services/getDetailsMovie";
+import Layout from "@/layouts/Layout.astro";
+import DetailsMovies from "@/components/DetailsMovies.astro";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+let movieDetails;
+let releaseDate;
+
+if (id) {
+  movieDetails = (await getDetailsMovie(id)) as DetailsMovie;
+  releaseDate = (await getDetailsMovie(id, "/release_dates")) as ReleaseDate;
+}
+
+function getRuntime(runtime: number) {
+  const hours = Math.floor(runtime / 60);
+  const minutes = Math.floor(runtime % 60);
+  return `${hours}h ${minutes}m`;
+}
+
+function getReleaseDate(releaseDate: ReleaseDate) {
+  return releaseDate.results.map((result: Result) => {
+    if (result.iso_3166_1 === "EE") {
+      let date = new Date(result.release_dates[0].release_date);
+      let day = date.getUTCDate();
+      let month = date.getUTCMonth() + 1;
+      let year = date.getUTCFullYear();
+      return `${day}/${month}/${year}`;
+    }
+  });
+}
+---
+
+<Layout title=`${movieDetails?.original_title}`>
+  <DetailsMovies
+    img=`${movieDetails?.poster_path}`
+    title={`${movieDetails?.original_title}`}
+    average={`${movieDetails?.vote_average.toFixed(1)}`}
+    alt={`${movieDetails?.original_title}`}
+    overview={`${movieDetails?.overview}`}
+    runtime={movieDetails?.runtime ? getRuntime(movieDetails.runtime) : ""}
+    realeaseDate={releaseDate ? getReleaseDate(releaseDate) : undefined}
+  />
+</Layout>

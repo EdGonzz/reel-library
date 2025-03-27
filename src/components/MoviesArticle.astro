@@ -10,7 +10,7 @@ interface Props {
 const { img, title, average, alt, id } = Astro.props;
 ---
 
-<a class="embla__slide" href={`/movies/${id}`}>
+<a class="embla__slide" href={`/movie/${id}`}>
   <img class="embla__slide__img" src={img} alt={alt} />
   <div class="embla__slide__info">
     <h2 class="embla__slide__title">{title}</h2>
