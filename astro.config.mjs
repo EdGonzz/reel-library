@@ -17,7 +17,8 @@ export default defineConfig({
       PUBLIC_TRENDING_MOVIES: envField.string({ context: 'server', access: 'public' }),
       PUBLIC_CATEGORIES_MOVIES: envField.string({ context: 'server', access: 'public' }),
       PUBLIC_DISCOVER_MOVIES: envField.string({ context: 'server', access: 'public' }),
-      PUBLIC_SEARCH_MOVIES: envField.string({ context: 'server', access: 'public' })
+      PUBLIC_SEARCH_MOVIES: envField.string({ context: 'server', access: 'public' }),
+      PUBLIC_DETAILS_MOVIE: envField.string({ context: 'server', access: 'public' })
     }
   },
 
