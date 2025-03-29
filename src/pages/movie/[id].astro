@@ -1,9 +1,11 @@
 ---
 import { type DetailsMovie } from "@/types/apiDetailsMovies";
 import { type ReleaseDate, type Result } from "@/types/apiReleaseDate";
+import { type Credits, type Cast } from "@/types/apiCreditsMovie";
 import { getDetailsMovie } from "@/services/getDetailsMovie";
 import Layout from "@/layouts/Layout.astro";
 import DetailsMovies from "@/components/DetailsMovies.astro";
+import TopCast from "@/components/TopCast.astro";
 
 export const prerender = false;
 
@@ -11,10 +13,12 @@ const { id } = Astro.params;
 
 let movieDetails;
 let releaseDate;
+let credits;
 
 if (id) {
   movieDetails = (await getDetailsMovie(id)) as DetailsMovie;
   releaseDate = (await getDetailsMovie(id, "/release_dates")) as ReleaseDate;
+  credits = (await getDetailsMovie(id, "/credits")) as Credits;
 }
 
 function getRuntime(runtime: number) {
@@ -34,9 +38,21 @@ function getReleaseDate(releaseDate: ReleaseDate) {
     }
   });
 }
+
+function getTopBilledCast(credits: Credits) {
+  return credits.cast.filter(
+    (cast: Cast) => cast && cast.order !== undefined && cast.order < 6
+  );
+}
+
+function getMostPopularDirector(credits: Credits) {
+  return credits.crew.filter(
+    (crew: Cast) => crew && crew.known_for_department === "Directing"
+  );
+}
 ---
 
-<Layout title=`${movieDetails?.original_title}`>
+<Layout title=`${movieDetails?.original_title} - Reel Library`>
   <DetailsMovies
     img=`${movieDetails?.poster_path}`
     title={`${movieDetails?.original_title}`}
@@ -45,5 +61,10 @@ function getReleaseDate(releaseDate: ReleaseDate) {
     overview={`${movieDetails?.overview}`}
     runtime={movieDetails?.runtime ? getRuntime(movieDetails.runtime) : ""}
     realeaseDate={releaseDate ? getReleaseDate(releaseDate) : undefined}
+    genres={movieDetails?.genres || []}
+  />
+  <TopCast
+    cast={credits ? getTopBilledCast(credits) : []}
+    credits={credits ? getMostPopularDirector(credits) : []}
   />
 </Layout>

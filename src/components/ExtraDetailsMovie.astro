@@ -1,0 +1,28 @@
+---
+import Calendar from "@/assets/svg/Calendar.svg";
+import Clock from "@/assets/svg/Clock.svg";
+import Star from "@/assets/svg/Star.svg";
+
+interface Props {
+  average: string;
+  runtime: string;
+  realeaseDate: string;
+}
+
+const { average, runtime, realeaseDate } = Astro.props;
+---
+
+<div class="flex items-center gap-2 opacity-80">
+  <small class="small-details">
+    <Calendar />
+    {realeaseDate}
+  </small>
+  <small class="small-details">
+    <Clock />
+    {runtime}
+  </small>
+  <small class="small-details">
+    <Star class="text-yellow-400" />
+    {average}/10
+  </small>
+</div>

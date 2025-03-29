@@ -1,7 +1,6 @@
 ---
-import Star from "@/assets/svg/Star.svg";
-import Calendar from "@/assets/svg/Calendar.svg";
-import Clock from "@/assets/svg/Clock.svg";
+import CategoriesButtons from "./CategoriesButtons.astro";
+import ExtraDetailsMovie from "./ExtraDetailsMovie.astro";
 
 interface Props {
   img: string;
@@ -11,9 +10,10 @@ interface Props {
   overview: string;
   runtime: string;
   realeaseDate: any;
+  genres: Object[];
 }
 
-const { img, title, average, alt, overview, runtime, realeaseDate } =
+const { img, title, average, alt, overview, runtime, realeaseDate, genres } =
   Astro.props;
 ---
 
@@ -23,24 +23,27 @@ const { img, title, average, alt, overview, runtime, realeaseDate } =
     alt={alt}
     class="w-full object-cover"
   />
-  <div class="flex flex-col justify-between p-4 gap-2">
-    <h2 class="text-3xl font-bold">
-      {title}
-    </h2>
-    <div class="flex items-center gap-2">
-      <small class="flex items-center gap-1">
-        <Calendar class="w-4 h-4" />
-        {realeaseDate}
-      </small>
-      <small class="flex items-center gap-1">
-        <Clock class="w-4 h-4" />
-        {runtime}
-      </small>
-      <small class="flex items-center gap-1">
-        <Star class="text-yellow-400 w-4 h-4" />
-        {average}/10
-      </small>
+  <div class="flex flex-col justify-between p-4 gap-5">
+    <div class="flex flex-col gap-3">
+      <h2 class="text-4xl font-bold">
+        {title}
+      </h2>
+      <ExtraDetailsMovie
+        average={average}
+        runtime={runtime}
+        realeaseDate={realeaseDate}
+      />
+      <div class="flex flex-wrap gap-1">
+        {
+          genres.map((genre: any) => {
+            return <CategoriesButtons id={genre.id} text={genre.name} />;
+          })
+        }
+      </div>
     </div>
-    <p class="text-lg font-normal text-text-200">{overview}</p>
+    <div class="flex flex-col gap-3">
+      <h3 class="text-2xl font-bold">Overview</h3>
+      <p class="text-lg">{overview}</p>
+    </div>
   </div>
 </section>

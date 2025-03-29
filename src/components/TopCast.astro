@@ -1,0 +1,37 @@
+---
+import { type Cast } from "@/types/apiCreditsMovie";
+
+interface Props {
+  cast: Cast[];
+  credits: Cast[];
+}
+
+const { cast, credits } = Astro.props;
+---
+
+<section class="flex flex-col gap-5 bg-bg-300 px-4">
+  <div class="flex flex-col gap-3">
+    <h3 class="text-2xl font-bold">Director</h3>
+    <p class="text-lg">{credits[0].name}</p>
+  </div>
+  <h3 class="text-2xl font-bold">Top Billed Cast</h3>
+  <div
+    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+  >
+    {
+      cast.map((actor: Cast) => {
+        return (
+          <div class="flex flex-col items-center text-center">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+              alt={actor.name}
+              class="w-24 h-24 object-cover rounded-full"
+            />
+            <h3 class="text-lg font-bold">{actor.name}</h3>
+            <p class="text-sm">{actor.character}</p>
+          </div>
+        );
+      })
+    }
+  </div>
+</section>

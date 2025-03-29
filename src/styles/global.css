@@ -32,3 +32,7 @@ body {
   color: var(--text-100);
   background-color: var(--bg-100);
 }
+
+.small-details {
+  @apply flex flex-row items-center gap-1 text-base font-semibold;
+}
