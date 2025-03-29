@@ -2,10 +2,12 @@
 import { type DetailsMovie } from "@/types/apiDetailsMovies";
 import { type ReleaseDate, type Result } from "@/types/apiReleaseDate";
 import { type Credits, type Cast } from "@/types/apiCreditsMovie";
+import { type SimilarMovies } from "@/types/apiSimilarMovies";
 import { getDetailsMovie } from "@/services/getDetailsMovie";
 import Layout from "@/layouts/Layout.astro";
 import DetailsMovies from "@/components/DetailsMovies.astro";
 import TopCast from "@/components/TopCast.astro";
+import SimilarMoviesContainer from "@/components/SimilarMoviesContainer.astro";
 
 export const prerender = false;
 
@@ -14,11 +16,13 @@ const { id } = Astro.params;
 let movieDetails;
 let releaseDate;
 let credits;
+let similarMovies;
 
 if (id) {
   movieDetails = (await getDetailsMovie(id)) as DetailsMovie;
   releaseDate = (await getDetailsMovie(id, "/release_dates")) as ReleaseDate;
   credits = (await getDetailsMovie(id, "/credits")) as Credits;
+  similarMovies = (await getDetailsMovie(id, "/similar")) as SimilarMovies;
 }
 
 function getRuntime(runtime: number) {
@@ -50,6 +54,11 @@ function getMostPopularDirector(credits: Credits) {
     (crew: Cast) => crew && crew.known_for_department === "Directing"
   );
 }
+
+function getSimilarMovies(similarMovies: SimilarMovies) {
+  let movies = similarMovies.results.slice(0, 6);
+  return movies;
+}
 ---
 
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
@@ -66,5 +75,8 @@ function getMostPopularDirector(credits: Credits) {
   <TopCast
     cast={credits ? getTopBilledCast(credits) : []}
     credits={credits ? getMostPopularDirector(credits) : []}
+  />
+  <SimilarMoviesContainer
+    similarMovies={similarMovies ? getSimilarMovies(similarMovies) : []}
   />
 </Layout>

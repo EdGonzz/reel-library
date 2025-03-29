@@ -9,7 +9,9 @@ const movies = data.results;
 <header class="w-full h-16 flex items-center">
   <h2 class="text-2xl font-bold">Popular Movies</h2>
 </header>
-<div class="grid grid-cols-2 gap-6 w-full">
+<div
+  class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+>
   {
     movies.map((movie) => (
       <a href={`/movie/${movie.id}`}>
