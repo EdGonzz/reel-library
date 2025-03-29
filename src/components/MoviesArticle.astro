@@ -1,4 +1,6 @@
 ---
+import Star from "@/assets/svg/Star.svg";
+
 interface Props {
   img: string;
   title: string;
@@ -14,6 +16,9 @@ const { img, title, average, alt, id } = Astro.props;
   <img class="embla__slide__img" src={img} alt={alt} />
   <div class="embla__slide__info">
     <h2 class="embla__slide__title">{title}</h2>
-    <p class="embla__slide__average">{`${average.toFixed(1)}⭐`}</p>
+    <div class="w-auto flex flex-row gap-2 items-center justify-center">
+      <Star class="w-4 h-4 text-yellow-400" />
+      <p class="embla__slide__average">{`${average.toFixed(1)}`}</p>
+    </div>
   </div>
 </a>

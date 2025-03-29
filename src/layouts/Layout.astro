@@ -1,6 +1,7 @@
 ---
 import "@/styles/global.css";
 import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
 
 export interface Props {
   title: string;
@@ -20,7 +21,10 @@ const { title } = Astro.props;
   </head>
   <body>
     <Nav />
-    <slot />
+    <main>
+      <slot />
+    </main>
+    <Footer />
   </body>
 
   <style>
@@ -30,6 +34,7 @@ const { title } = Astro.props;
       width: 100%;
       height: 100%;
       box-sizing: border-box;
+      background-color: var(--color-bg-300);
     }
   </style>
 </html>
