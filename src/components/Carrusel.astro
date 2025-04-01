@@ -55,8 +55,9 @@ const movies = data.results;
 
 <style is:inline>
   .embla {
+    padding-top: 30px;
+    padding-bottom: 30px;
     width: 100%;
-    --slide-height: 19rem;
     --slide-spacing: 0.9rem;
     --slide-size: 65%;
   }
@@ -65,6 +66,7 @@ const movies = data.results;
   }
   .embla__container {
     display: flex;
+    align-items: center;
     touch-action: pan-y pinch-zoom;
     margin-left: calc(var(--slide-spacing) * -1);
   }
@@ -80,7 +82,7 @@ const movies = data.results;
   .embla__slide__img {
     border-radius: 1.8rem;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
   }
   .embla__slide__info {
     margin-top: 0.5rem;
