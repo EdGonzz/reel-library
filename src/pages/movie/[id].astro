@@ -50,9 +50,15 @@ function getTopBilledCast(credits: Credits) {
 }
 
 function getMostPopularDirector(credits: Credits) {
-  return credits.crew.filter(
-    (crew: Cast) => crew && crew.known_for_department === "Directing"
+  let directors = credits.crew.filter(
+    (crew: Cast) => crew && crew.department === "Directing"
   );
+
+  if (directors.length > 0) {
+    return directors.sort((a, b) => b.popularity - a.popularity);
+  } else {
+    return [];
+  }
 }
 
 function getSimilarMovies(similarMovies: SimilarMovies) {
