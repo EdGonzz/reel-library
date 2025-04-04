@@ -14,7 +14,8 @@ const movies = data.results;
         movies.map((movie) => (
           <MoviesArticle
             id={movie.id}
-            img={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+            mobileImage={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+            desktopImage={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
             title={movie.title}
             average={movie.vote_average}
             alt={movie.title}
@@ -69,6 +70,13 @@ const movies = data.results;
     align-items: center;
     touch-action: pan-y pinch-zoom;
     margin-left: calc(var(--slide-spacing) * -1);
+
+    @media (min-width: 768px) {
+      display: flex;
+      flex-direction: row;
+      margin-left: 0;
+      width: 100%;
+    }
   }
   .embla__slide {
     transform: translate3d(0, 0, 0);
@@ -77,26 +85,53 @@ const movies = data.results;
     flex-direction: column;
     align-items: center;
     min-width: 0;
-    padding-left: var(--slide-spacing);
+    margin-left: var(--slide-spacing);
+
+    @media (min-width: 768px) {
+      align-items: start;
+    }
   }
   .embla__slide__img {
-    border-radius: 1.8rem;
+    border-radius: 1.6rem;
     display: block;
     object-fit: contain;
+
+    @media (min-width: 768px) {
+      width: 100%;
+      height: 100%;
+      mask-image: linear-gradient(black 75%, transparent);
+    }
   }
   .embla__slide__info {
     margin-top: 0.5rem;
     text-align: center;
+
+    @media (min-width: 768px) {
+      position: absolute;
+      bottom: 0;
+      text-align: start;
+      margin-top: 0;
+      padding: 0.5rem;
+    }
   }
   .embla__slide__title {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
+
+    @media (min-width: 768px) {
+      font-size: 1.875rem;
+      margin-bottom: 0;
+    }
   }
   .embla__slide__average {
     font-size: 1rem;
     line-height: 1.5;
     font-weight: 600;
+
+    @media (min-width: 768px) {
+      font-size: 1.25rem;
+    }
   }
   .embla__controls {
     margin-top: 1rem;
@@ -105,8 +140,9 @@ const movies = data.results;
     justify-items: center;
 
     @media (min-width: 768px) {
-      width: 80%;
+      width: 100%;
       justify-content: space-evenly;
+      padding-inline: 1rem;
     }
   }
   .embla__buttons {
@@ -127,7 +163,6 @@ const movies = data.results;
     z-index: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
   }
   .embla__button__svg {
     width: 35%;
@@ -140,10 +175,11 @@ const movies = data.results;
     justify-content: center;
     gap: 0.2rem;
     align-items: center;
-    /* padding-left: var(--slide-spacing); */
 
     @media (min-width: 768px) {
-      justify-content: flex-end;
+      justify-self: flex-end;
+      width: 50%;
+      justify-content: end;
     }
   }
   .embla__dot {

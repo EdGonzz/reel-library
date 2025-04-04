@@ -2,22 +2,30 @@
 import Star from "@/assets/svg/Star.svg";
 
 interface Props {
-  img: string;
+  mobileImage: string;
+  desktopImage: string;
   title: string;
   average: number;
   alt: string;
   id: number;
 }
 
-const { img, title, average, alt, id } = Astro.props;
+const { mobileImage, desktopImage, title, average, alt, id } = Astro.props;
 ---
 
 <a class="embla__slide" href={`/movie/${id}`}>
-  <img class="embla__slide__img" src={img} alt={alt} />
-  <div class="embla__slide__info">
+  <picture class="relative h-full w-full">
+    <source media="(min-width: 768px)" srcset={desktopImage} />
+    <img class="embla__slide__img" src={mobileImage} alt={alt} />
+  </picture>
+  <div
+    class="embla__slide__info bg-black/50 backdrop-saturate-150 text-white pl-4 rounded-b-2xl w-full"
+  >
     <h2 class="embla__slide__title">{title}</h2>
-    <div class="w-auto flex flex-row gap-2 items-center justify-center">
-      <Star class="w-4 h-4 text-yellow-400" />
+    <div
+      class="w-auto flex flex-row gap-2 items-center justify-center md:justify-start"
+    >
+      <Star class="w-4 h-4 text-yellow-400 md:w-5 md:h-5" />
       <p class="embla__slide__average">{`${average.toFixed(1)}`}</p>
     </div>
   </div>
