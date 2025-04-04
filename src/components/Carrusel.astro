@@ -56,11 +56,11 @@ const movies = data.results;
 
 <style is:inline>
   .embla {
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     width: 100%;
     --slide-spacing: 0.9rem;
-    --slide-size: 65%;
+    --slide-size: 60%;
   }
   .embla__viewport {
     overflow: hidden;
@@ -85,10 +85,12 @@ const movies = data.results;
     flex-direction: column;
     align-items: center;
     min-width: 0;
-    margin-left: var(--slide-spacing);
+    padding-left: var(--slide-spacing);
 
     @media (min-width: 768px) {
+      padding-left: 0;
       align-items: start;
+      margin-left: var(--slide-spacing);
     }
   }
   .embla__slide__img {
