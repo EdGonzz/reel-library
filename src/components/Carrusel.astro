@@ -61,6 +61,11 @@ const movies = data.results;
     width: 100%;
     --slide-spacing: 0.9rem;
     --slide-size: 60%;
+
+    @media (min-width: 768px) {
+      --slide-size: 450px;
+      --slide-spacing: 2rem;
+    }
   }
   .embla__viewport {
     overflow: hidden;
@@ -146,6 +151,10 @@ const movies = data.results;
       justify-content: space-evenly;
       padding-inline: 1rem;
     }
+
+    @media (min-width: 1024px) {
+      padding-inline: 2rem;
+    }
   }
   .embla__buttons {
     display: none;
@@ -182,6 +191,10 @@ const movies = data.results;
       justify-self: flex-end;
       width: 50%;
       justify-content: end;
+    }
+
+    @media (min-width: 1024px) {
+      width: 30%;
     }
   }
   .embla__dot {

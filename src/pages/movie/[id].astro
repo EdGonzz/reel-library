@@ -44,9 +44,15 @@ function getReleaseDate(releaseDate: ReleaseDate) {
 }
 
 function getTopBilledCast(credits: Credits) {
-  return credits.cast.filter(
+  let cast = credits.cast.filter(
     (cast: Cast) => cast && cast.order !== undefined && cast.order < 6
   );
+
+  if (cast.length > 0) {
+    return cast.sort((a, b) => b.popularity - a.popularity);
+  } else {
+    return [];
+  }
 }
 
 function getMostPopularDirector(credits: Credits) {
@@ -62,27 +68,32 @@ function getMostPopularDirector(credits: Credits) {
 }
 
 function getSimilarMovies(similarMovies: SimilarMovies) {
-  let movies = similarMovies.results.slice(0, 6);
-  return movies;
+  let movies = similarMovies.results;
+
+  if (movies.length > 0) {
+    return movies.sort((a, b) => b.popularity - a.popularity);
+  } else {
+    return [];
+  }
 }
 ---
 
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
-  <DetailsMovies
-    img=`${movieDetails?.poster_path}`
-    title={`${movieDetails?.original_title}`}
-    average={`${movieDetails?.vote_average.toFixed(1)}`}
-    alt={`${movieDetails?.original_title}`}
-    overview={`${movieDetails?.overview}`}
-    runtime={movieDetails?.runtime ? getRuntime(movieDetails.runtime) : ""}
-    realeaseDate={releaseDate ? getReleaseDate(releaseDate) : undefined}
-    genres={movieDetails?.genres || []}
-  />
-  <TopCast
-    cast={credits ? getTopBilledCast(credits) : []}
-    credits={credits ? getMostPopularDirector(credits) : []}
-  />
-  <SimilarMoviesContainer
-    similarMovies={similarMovies ? getSimilarMovies(similarMovies) : []}
-  />
+  <div class="flex flex-col gap-5 md:gap-10">
+    <DetailsMovies
+      img=`${movieDetails?.poster_path}`
+      title={`${movieDetails?.original_title}`}
+      average={`${movieDetails?.vote_average.toFixed(1)}`}
+      alt={`${movieDetails?.original_title}`}
+      overview={`${movieDetails?.overview}`}
+      runtime={movieDetails?.runtime ? getRuntime(movieDetails.runtime) : ""}
+      realeaseDate={releaseDate ? getReleaseDate(releaseDate) : undefined}
+      genres={movieDetails?.genres || []}
+      credits={credits ? getMostPopularDirector(credits) : []}
+    />
+    <TopCast cast={credits ? getTopBilledCast(credits) : []} />
+    <SimilarMoviesContainer
+      similarMovies={similarMovies ? getSimilarMovies(similarMovies) : []}
+    />
+  </div>
 </Layout>
