@@ -10,7 +10,10 @@ const categories = data.genres;
 export const prerender = true;
 ---
 
-<section id="categories" class="bg-bg-300 h-auto w-full px-4 flex flex-col">
+<section
+  id="categories"
+  class="bg-bg-300 h-auto w-full px-4 flex flex-col lg:px-6"
+>
   <header class="w-full h-16 flex items-center">
     <h2 class="text-2xl font-bold">Categories</h2>
   </header>
@@ -78,7 +81,7 @@ export const prerender = true;
       <header class="w-full h-16 flex items-center">
         <h2 class="text-2xl font-bold">${CategoriName} Movies</h2>
       </header>
-      <div class="grid grid-cols-2 gap-6 w-full">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         ${movies.results
           .map(
             (movie) => `
