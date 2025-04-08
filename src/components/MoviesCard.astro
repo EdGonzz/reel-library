@@ -1,0 +1,20 @@
+---
+interface Props {
+  id: number;
+  title: string;
+  image: string;
+}
+
+const { id, title, image } = Astro.props;
+---
+
+<a href={`/movie/${id}`}>
+  <article class="flex flex-col gap-3">
+    <img
+      src={`https://image.tmdb.org/t/p/w500${image}`}
+      alt={title}
+      class="w-full object-contain rounded-lg"
+    />
+    <h3 class="text-xl font-bold text-balance">{title}</h3>
+  </article>
+</a>

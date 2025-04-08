@@ -2,21 +2,22 @@
 import { type CATEGORIES_MOVIES } from "@/types/apiCategoriesMovies";
 import { getCategories } from "@/services/getCategories";
 import CategoriesButtons from "@/components/CategoriesButtons.astro";
-import MoviesContainer from "@/components/MoviesContainer.astro";
+import MovieContainer from "@/components/MovieContainer.astro";
+import SectionContainer from "@/components/SectionContainer.astro";
+import type { Moviesbycategory } from "@/types/apiMovieByCategory";
+import { getMoviesByCategory } from "@/services/getMoviesByCategory";
+import MoviesCard from "@/components/MoviesCard.astro";
 
-const data = (await getCategories()) as CATEGORIES_MOVIES;
-const categories = data.genres;
+const dataMovies = (await getMoviesByCategory()) as Moviesbycategory;
+const movies = dataMovies.results;
+
+const dataCategories = (await getCategories()) as CATEGORIES_MOVIES;
+const categories = dataCategories.genres;
 
 export const prerender = true;
 ---
 
-<section
-  id="categories"
-  class="bg-bg-300 h-auto w-full px-4 flex flex-col lg:px-6"
->
-  <header class="w-full h-16 flex items-center">
-    <h2 class="text-2xl font-bold">Categories</h2>
-  </header>
+<SectionContainer title="Categories" id="categories">
   <div id="genres-container" class="flex flex-wrap flex-row gap-1 mb-2">
     {
       categories.map((category) => (
@@ -24,10 +25,20 @@ export const prerender = true;
       ))
     }
   </div>
-  <div id="movies-container" class="w-full h-auto flex flex-col">
-    <MoviesContainer slot="fallback" />
-  </div>
-</section>
+</SectionContainer>
+<SectionContainer title="Popular Movies" id="movies-container">
+  <MovieContainer>
+    {
+      movies.map((movie) => (
+        <MoviesCard
+          id={movie.id}
+          title={movie.title}
+          image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        />
+      ))
+    }
+  </MovieContainer>
+</SectionContainer>
 
 <script>
   import type { Moviesbycategory } from "@/types/apiMovieByCategory";
