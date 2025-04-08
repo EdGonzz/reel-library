@@ -35,7 +35,7 @@ import Search from "@/assets/svg/Search.svg";
 <div id="modal" class="hidden relative">
   <div
     id="search-container"
-    class="absolute z-30 top-0 left-0 w-full h-[540px] overflow-y-scroll flex flex-col gap-1 p-1"
+    class="search-container absolute z-30 top-0 left-0 w-full h-[540px] overflow-y-scroll flex flex-col gap-1 p-1 md:w-3/8 md:right-0 md:left-auto md:h-[366px]"
   >
   </div>
 </div>
@@ -140,10 +140,21 @@ import Search from "@/assets/svg/Search.svg";
     width: 200px;
     transition: width 0.6s ease-in-out;
     transition-property: all;
+
+    @media (min-width: 768px) {
+      width: 350px;
+    }
   }
   .search-input {
     width: 150px;
     transition: width 0.6s ease-in-out;
     transition-delay: 0.8s;
+
+    @media (min-width: 768px) {
+      width: 300px;
+    }
+  }
+  .search-container {
+    mask-image: linear-gradient(black 90%, transparent);
   }
 </style>
