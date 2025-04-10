@@ -34,6 +34,7 @@ export const prerender = true;
           id={movie.id}
           title={movie.title}
           image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          average={movie.vote_average}
         />
       ))
     }

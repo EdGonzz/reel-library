@@ -1,20 +1,30 @@
 ---
+import Star from "@/assets/svg/Star.svg";
+
 interface Props {
   id: number;
   title: string;
   image: string;
+  average: number;
 }
 
-const { id, title, image } = Astro.props;
+const { id, title, image, average } = Astro.props;
 ---
 
-<a href={`/movie/${id}`}>
-  <article class="flex flex-col gap-3">
-    <img
-      src={`https://image.tmdb.org/t/p/w500${image}`}
-      alt={title}
-      class="w-full object-contain rounded-lg"
-    />
-    <h3 class="text-xl font-bold text-balance">{title}</h3>
-  </article>
+<a
+  class="embla__slide hover:scale-105 transition-transform"
+  href={`/movie/${id}`}
+>
+  <picture class="relative md:h-full md:w-full">
+    <img class="embla__slide__img mask-bottom" src={image} alt={title} />
+  </picture>
+  <div
+    class="absolute bottom-0 text-start mt-0 p-2 bg-black/50 backdrop-saturate-150 text-white md:pl-4 rounded-b-2xl w-full"
+  >
+    <h2 class="embla__slide__title">{title}</h2>
+    <div class="w-auto flex flex-row gap-2 items-center">
+      <Star class="w-4 h-4 text-yellow-400 md:w-5 md:h-5" />
+      <p class="embla__slide__average">{`${(average ?? 0).toFixed(1)}`}</p>
+    </div>
+  </div>
 </a>
