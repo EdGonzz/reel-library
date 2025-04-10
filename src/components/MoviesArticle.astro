@@ -1,5 +1,6 @@
 ---
 import Star from "@/assets/svg/Star.svg";
+import { fade } from "astro:transitions";
 
 interface Props {
   mobileImage: string;
@@ -13,10 +14,18 @@ interface Props {
 const { mobileImage, desktopImage, title, average, alt, id } = Astro.props;
 ---
 
-<a class="embla__slide" href={`/movie/${id}`}>
+<a
+  class="embla__slide hover:scale-y-105 transition-transform"
+  href={`/movie/${id}`}
+>
   <picture class="relative md:h-full md:w-full">
     <source media="(min-width: 768px)" srcset={desktopImage} />
-    <img class="embla__slide__img" src={mobileImage} alt={alt} />
+    <img
+      transition:name={`movie-${title}`}
+      class="embla__slide__img"
+      src={mobileImage}
+      alt={alt}
+    />
   </picture>
   <div
     class="embla__slide__info md:bg-black/50 md:backdrop-saturate-150 md:text-white md:pl-4 md:rounded-b-2xl md:w-full"

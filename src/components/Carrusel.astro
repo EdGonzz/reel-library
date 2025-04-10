@@ -56,8 +56,6 @@ const movies = data.results;
 
 <style is:inline>
   .embla {
-    padding-top: 20px;
-    padding-bottom: 20px;
     width: 100%;
     --slide-spacing: 0.9rem;
     --slide-size: 60%;
@@ -69,6 +67,8 @@ const movies = data.results;
   }
   .embla__viewport {
     overflow: hidden;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
   .embla__container {
     display: flex;
@@ -236,60 +236,73 @@ const movies = data.results;
 
   const OPTIONS: EmblaOptionsType = { loop: true };
 
-  const emblaNode = document.querySelector(".embla") as HTMLElement;
-  const viewportNode = emblaNode.querySelector(
-    ".embla__viewport"
-  ) as HTMLElement;
-  const prevBtn = emblaNode.querySelector(
-    ".embla__button--prev"
-  ) as HTMLElement;
-  const nextBtn = emblaNode.querySelector(
-    ".embla__button--next"
-  ) as HTMLElement;
-  const dotsNode = document.querySelector(".embla__dots") as HTMLElement;
+  const setupCarousel = () => {
+    const emblaNode = document.querySelector(".embla") as HTMLElement;
+    const viewportNode = emblaNode.querySelector(
+      ".embla__viewport"
+    ) as HTMLElement;
+    const prevBtn = emblaNode.querySelector(
+      ".embla__button--prev"
+    ) as HTMLElement;
+    const nextBtn = emblaNode.querySelector(
+      ".embla__button--next"
+    ) as HTMLElement;
+    const dotsNode = document.querySelector(".embla__dots") as HTMLElement;
 
-  const mediaQuery = window.matchMedia("(min-width: 768px)");
-  const createAutoPlayPlugin = () =>
-    mediaQuery.matches
-      ? [
-          Autoplay({
-            delay: 5000,
-            stopOnMouseEnter: true,
-            stopOnInteraction: false,
-          }),
-        ]
-      : [];
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const createAutoPlayPlugin = () =>
+      mediaQuery.matches
+        ? [
+            Autoplay({
+              delay: 5000,
+              stopOnMouseEnter: true,
+              stopOnInteraction: false,
+            }),
+          ]
+        : [];
 
-  const emblaApi = EmblaCarousel(viewportNode, OPTIONS, createAutoPlayPlugin());
+    const emblaApi = EmblaCarousel(
+      viewportNode,
+      OPTIONS,
+      createAutoPlayPlugin()
+    );
 
-  const onNavButtonClick = (emblaApi: EmblaCarouselType): void => {
-    const autoplay = emblaApi?.plugins()?.autoplay;
-    if (!autoplay) return;
+    const onNavButtonClick = (emblaApi: EmblaCarouselType): void => {
+      const autoplay = emblaApi?.plugins()?.autoplay;
+      if (!autoplay) return;
 
-    const resetOrStop =
-      autoplay.options.stopOnInteraction === false
-        ? autoplay.reset
-        : autoplay.stop;
+      const resetOrStop =
+        autoplay.options.stopOnInteraction === false
+          ? autoplay.reset
+          : autoplay.stop;
 
-    resetOrStop();
+      resetOrStop();
+    };
+
+    const removeTweenOpacity = setupTweenOpacity(emblaApi);
+
+    const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
+      emblaApi,
+      prevBtn,
+      nextBtn,
+      onNavButtonClick
+    );
+    const removeDotBtnsAndClickHandlers = addDotBtnsAndClickHandlers(
+      emblaApi,
+      dotsNode,
+      onNavButtonClick
+    );
+
+    emblaApi
+      .on("destroy", removeTweenOpacity)
+      .on("destroy", removePrevNextBtnsClickHandlers)
+      .on("destroy", removeDotBtnsAndClickHandlers);
+
+    return () => {
+      emblaApi.destroy();
+    };
   };
 
-  const removeTweenOpacity = setupTweenOpacity(emblaApi);
-
-  const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
-    emblaApi,
-    prevBtn,
-    nextBtn,
-    onNavButtonClick
-  );
-  const removeDotBtnsAndClickHandlers = addDotBtnsAndClickHandlers(
-    emblaApi,
-    dotsNode,
-    onNavButtonClick
-  );
-
-  emblaApi
-    .on("destroy", removeTweenOpacity)
-    .on("destroy", removePrevNextBtnsClickHandlers)
-    .on("destroy", removeDotBtnsAndClickHandlers);
+  // Ejecutar en la carga inicial y después de cada navegación
+  document.addEventListener("astro:page-load", setupCarousel);
 </script>

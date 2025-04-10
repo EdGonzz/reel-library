@@ -11,6 +11,7 @@ const { id, title, image } = Astro.props;
 <a href={`/movie/${id}`}>
   <article class="flex flex-col gap-3">
     <img
+      transition:name=`movie-${title}`
       src={`https://image.tmdb.org/t/p/w500${image}`}
       alt={title}
       class="w-full object-contain rounded-lg"
