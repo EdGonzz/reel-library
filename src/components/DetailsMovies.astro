@@ -2,7 +2,6 @@
 import type { Cast } from "@/types/apiCreditsMovie.ts";
 import CategoriesButtons from "./CategoriesButtons.astro";
 import ExtraDetailsMovie from "./ExtraDetailsMovie.astro";
-import { fade } from "astro:transitions";
 
 interface Props {
   img: string;
@@ -31,7 +30,6 @@ const {
 
 <section id="movie" class="bg-bg-300 h-auto w-full flex flex-col md:flex-row">
   <img
-    transition:name={`movie-${title}`}
     src={`https://image.tmdb.org/t/p/w400${img}`}
     alt={alt}
     class="w-full object-cover md:max-w-[400px]"
