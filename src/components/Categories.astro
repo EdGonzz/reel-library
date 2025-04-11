@@ -43,53 +43,55 @@ export const prerender = true;
 
 <script>
   import type { Moviesbycategory } from "@/types/apiMovieByCategory";
-  const genresContainer = document.getElementById(
-    "genres-container"
-  ) as HTMLElement;
 
-  genresContainer.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
-
-    if (target.tagName === "BUTTON") {
-      const categoryID = target.id;
-      const categoryName = target.textContent?.trim();
-
-      window.location.hash = `#category=${categoryID}-${categoryName}`;
-    }
-  });
-
-  window.addEventListener("hashchange", () => {
-    const hash = window.location.hash;
-    if (hash && hash.startsWith("#category")) {
-      const [hashCategory, hashId] = hash.split("=");
-      const [categoryID, categoryName] = hashId.split("-");
-      (async () => {
-        const movies = await getMoviesByCategory(`${categoryID}`);
-        printMovies(movies, `${categoryName}`);
-      })();
-    }
-  });
-
-  async function getMoviesByCategory(categoryID: string) {
-    try {
-      const response = await fetch(`/api/${categoryID}.json`);
-      if (!response.ok) {
-        throw new Error(`Error fetching data: ${response.statusText}`);
-      }
-      const data = await response.json();
-
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  function printMovies(movies: Moviesbycategory, CategoriName: string) {
-    const moviesContainer = document.getElementById(
-      "movies-container"
+  const setupGenresContainer = () => {
+    const genresContainer = document.getElementById(
+      "genres-container"
     ) as HTMLElement;
 
-    moviesContainer.innerHTML = `
+    genresContainer.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+
+      if (target.tagName === "BUTTON") {
+        const categoryID = target.id;
+        const categoryName = target.textContent?.trim();
+
+        window.location.hash = `#category=${categoryID}-${categoryName}`;
+      }
+    });
+
+    window.addEventListener("hashchange", () => {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith("#category")) {
+        const [hashCategory, hashId] = hash.split("=");
+        const [categoryID, categoryName] = hashId.split("-");
+        (async () => {
+          const movies = await getMoviesByCategory(`${categoryID}`);
+          printMovies(movies, `${categoryName}`);
+        })();
+      }
+    });
+
+    async function getMoviesByCategory(categoryID: string) {
+      try {
+        const response = await fetch(`/api/${categoryID}.json`);
+        if (!response.ok) {
+          throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+        const data = await response.json();
+
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function printMovies(movies: Moviesbycategory, CategoriName: string) {
+      const moviesContainer = document.getElementById(
+        "movies-container"
+      ) as HTMLElement;
+
+      moviesContainer.innerHTML = `
       <header class="w-full h-16 flex items-center">
         <h2 class="text-2xl font-bold">${CategoriName} Movies</h2>
       </header>
@@ -112,5 +114,8 @@ export const prerender = true;
           .join("")}
       </div>
     `;
-  }
+    }
+  };
+
+  document.addEventListener("astro:page-load", setupGenresContainer);
 </script>
