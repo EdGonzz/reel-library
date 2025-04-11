@@ -19,6 +19,7 @@ const { similarMovies } = Astro.props;
           id={(movie as Result).id}
           title={(movie as Result).title}
           image={`https://image.tmdb.org/t/p/w500${(movie as Result).poster_path}`}
+          average={(movie as Result).vote_average}
         />
       ))
     }
