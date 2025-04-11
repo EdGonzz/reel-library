@@ -79,7 +79,7 @@ function getSimilarMovies(similarMovies: SimilarMovies) {
 ---
 
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
-  <div class="flex flex-col gap-5 md:gap-10">
+  <div class="flex flex-col gap-5 md:gap-10" transition:animate="slide">
     <DetailsMovies
       img=`${movieDetails?.poster_path}`
       title={`${movieDetails?.original_title}`}
