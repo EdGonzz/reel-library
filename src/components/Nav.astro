@@ -42,75 +42,77 @@ import Search from "@/assets/svg/Search.svg";
 
 <script>
   import type { QueryMovies } from "@/types/apiQueryMovies";
-  const $inputContainer = document.getElementById(
-    "input-container"
-  ) as HTMLDivElement;
-  const $searchInput = document.getElementById(
-    "search-input"
-  ) as HTMLInputElement;
-  const $searchButton = document.getElementById(
-    "search-button"
-  ) as HTMLButtonElement;
-  const $modal = document.getElementById("modal") as HTMLDivElement;
-  const $searchContainer = document.getElementById(
-    "search-container"
-  ) as HTMLElement;
 
   let debounceTimer = 0;
 
-  $searchButton.addEventListener("click", () => {
-    $inputContainer.classList.toggle("show-input");
-    $searchInput.classList.toggle("search-input");
-    $modal.classList.toggle("hidden");
+  const setupSearch = () => {
+    const $inputContainer = document.getElementById(
+      "input-container"
+    ) as HTMLDivElement;
+    const $searchInput = document.getElementById(
+      "search-input"
+    ) as HTMLInputElement;
+    const $searchButton = document.getElementById(
+      "search-button"
+    ) as HTMLButtonElement;
+    const $modal = document.getElementById("modal") as HTMLDivElement;
+    const $searchContainer = document.getElementById(
+      "search-container"
+    ) as HTMLElement;
 
-    if (!$searchInput.classList.contains("pl-2")) {
-      $searchInput.classList.add("pl-2");
-      $searchInput.focus();
-    } else {
-      $searchInput.classList.remove("pl-2");
-      $searchInput.blur();
-    }
-  });
+    $searchButton.addEventListener("click", () => {
+      $inputContainer.classList.toggle("show-input");
+      $searchInput.classList.toggle("search-input");
+      $modal.classList.toggle("hidden");
 
-  $searchInput.addEventListener("keyup", (e) => {
-    clearTimeout(debounceTimer);
-    let query = $searchInput.value;
-
-    if (query.length < 2) {
-      $searchContainer.innerHTML = ``;
-      return;
-    }
-
-    if (query.length > 2) {
-      debounceTimer = setTimeout(async () => {
-        try {
-          const movies = await getMovies(query);
-          if (movies) {
-            printMovies(movies);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }, 500);
-    }
-  });
-
-  async function getMovies(query: string) {
-    try {
-      const response = await fetch(`/api/query/${query}.json`);
-      if (!response.ok) {
-        throw new Error(`Error fetching data: ${response.statusText}`);
+      if (!$searchInput.classList.contains("pl-2")) {
+        $searchInput.classList.add("pl-2");
+        $searchInput.focus();
+      } else {
+        $searchInput.classList.remove("pl-2");
+        $searchInput.blur();
       }
-      const data = await response.json();
+    });
 
-      return data;
-    } catch (error) {
-      console.error(error);
+    $searchInput.addEventListener("keyup", (e) => {
+      clearTimeout(debounceTimer);
+      let query = $searchInput.value;
+
+      if (query.length < 2) {
+        $searchContainer.innerHTML = ``;
+        return;
+      }
+
+      if (query.length > 2) {
+        debounceTimer = setTimeout(async () => {
+          try {
+            const movies = await getMovies(query);
+            if (movies) {
+              printMovies(movies);
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }, 500);
+      }
+    });
+
+    async function getMovies(query: string) {
+      try {
+        const response = await fetch(`/api/query/${query}.json`);
+        if (!response.ok) {
+          throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+        const data = await response.json();
+
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
 
-  function printMovies(movies: QueryMovies) {
-    $searchContainer.innerHTML = `
+    function printMovies(movies: QueryMovies) {
+      $searchContainer.innerHTML = `
       ${movies.results
         .map(
           (movie) => `
@@ -131,7 +133,10 @@ import Search from "@/assets/svg/Search.svg";
         )
         .join("")}
     `;
-  }
+    }
+  };
+
+  document.addEventListener("astro:page-load", setupSearch);
 </script>
 
 <style>
