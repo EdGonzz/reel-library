@@ -1,0 +1,74 @@
+---
+import SectionContainer from "./SectionContainer.astro";
+import Star from "@/assets/svg/Star.svg";
+import type { Result } from "@/types/apiMovieReviews";
+
+interface Props {
+  reviews: Object[];
+}
+
+const { reviews } = Astro.props;
+console.log(reviews);
+---
+
+<SectionContainer title="Reviews" id="reviews">
+  <div id="reviews-container" class="flex flex-col gap-3">
+    {
+      reviews.map((review: Object) => (
+        <div class="flex flex-col gap-1 rounded-xl border-2 border-bg-200 p-4">
+          <div class="flex flex-row gap-2">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${(review as Result).author_details.avatar_path}`}
+              alt={`${(review as Result).author_details.name}`}
+              class="w-12 h-12 rounded-full"
+            />
+            <div class="w-full flex flex-col gap-1">
+              <div class="w-full flex items-center justify-between">
+                <h3 class="text-xl font-bold text-balance">
+                  {(review as Result).author}
+                </h3>
+
+                <p class="text-sm text-text-200">
+                  {new Date((review as Result).created_at).toLocaleDateString()}
+                </p>
+              </div>
+              <p class="text-sm text-text-200 flex flex-row gap-1">
+                {(review as Result).author_details.rating}/10
+                <Star class="w-4 h-4 text-yellow-400 md:w-5 md:h-5" />
+              </p>
+            </div>
+          </div>
+          <div id="reviews-container-text" class="flex flex-col gap-1">
+            <p id={`${(review as Result).id}`} class="text-lg line-clamp-8">
+              {(review as Result).content}
+            </p>
+            <button id={`${(review as Result).id}`}>View More</button>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</SectionContainer>
+
+<script>
+  const reviewsContainerText = document.querySelectorAll(
+    "#reviews-container-text"
+  ) as NodeListOf<HTMLElement>;
+
+  reviewsContainerText.forEach((element) => {
+    element.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+
+      if (target.tagName === "BUTTON") {
+        const reviewID = target.id;
+        const reviewText = document.getElementById(reviewID);
+
+        if (reviewText) {
+          reviewText.classList.toggle("line-clamp-8");
+          target.textContent =
+            target.textContent === "View More" ? "View Less" : "View More";
+        }
+      }
+    });
+  });
+</script>

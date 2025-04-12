@@ -3,11 +3,13 @@ import { type DetailsMovie } from "@/types/apiDetailsMovies";
 import { type ReleaseDate, type Result } from "@/types/apiReleaseDate";
 import { type Credits, type Cast } from "@/types/apiCreditsMovie";
 import { type SimilarMovies } from "@/types/apiSimilarMovies";
+import { type MoviesReviews } from "@/types/apiMovieReviews";
 import { getDetailsMovie } from "@/services/getDetailsMovie";
 import Layout from "@/layouts/Layout.astro";
 import DetailsMovies from "@/components/DetailsMovies.astro";
 import TopCast from "@/components/TopCast.astro";
 import SimilarMoviesContainer from "@/components/SimilarMoviesContainer.astro";
+import ReviewsContainer from "@/components/ReviewsContainer.astro";
 
 export const prerender = false;
 
@@ -17,12 +19,14 @@ let movieDetails;
 let releaseDate;
 let credits;
 let similarMovies;
+let reviews;
 
 if (id) {
   movieDetails = (await getDetailsMovie(id)) as DetailsMovie;
   releaseDate = (await getDetailsMovie(id, "/release_dates")) as ReleaseDate;
   credits = (await getDetailsMovie(id, "/credits")) as Credits;
   similarMovies = (await getDetailsMovie(id, "/similar")) as SimilarMovies;
+  reviews = (await getDetailsMovie(id, "/reviews")) as MoviesReviews;
 }
 
 function getRuntime(runtime: number) {
@@ -76,6 +80,16 @@ function getSimilarMovies(similarMovies: SimilarMovies) {
     return [];
   }
 }
+
+function getReviews(reviews: MoviesReviews) {
+  let movies = reviews.results;
+
+  if (movies.length > 0) {
+    return movies.filter((movie) => movie.author_details?.avatar_path);
+  } else {
+    return [];
+  }
+}
 ---
 
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
@@ -92,6 +106,7 @@ function getSimilarMovies(similarMovies: SimilarMovies) {
       credits={credits ? getMostPopularDirector(credits) : []}
     />
     <TopCast cast={credits ? getTopBilledCast(credits) : []} />
+    <ReviewsContainer reviews={reviews ? getReviews(reviews) : []} />
     <SimilarMoviesContainer
       similarMovies={similarMovies ? getSimilarMovies(similarMovies) : []}
     />
