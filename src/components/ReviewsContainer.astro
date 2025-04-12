@@ -8,14 +8,13 @@ interface Props {
 }
 
 const { reviews } = Astro.props;
-console.log(reviews);
 ---
 
 <SectionContainer title="Reviews" id="reviews">
   <div id="reviews-container" class="flex flex-col gap-3">
     {
       reviews.map((review: Object) => (
-        <div class="flex flex-col gap-1 rounded-xl border-2 border-bg-200 p-4">
+        <div class="flex flex-col gap-1 rounded-xl border-2 border-bg-200 shadow-xl p-4">
           <div class="flex flex-row gap-2">
             <img
               src={`https://image.tmdb.org/t/p/w500${(review as Result).author_details.avatar_path}`}
@@ -39,7 +38,7 @@ console.log(reviews);
             </div>
           </div>
           <div id="reviews-container-text" class="flex flex-col gap-1">
-            <p id={`${(review as Result).id}`} class="text-lg line-clamp-8">
+            <p id={`${(review as Result).id}`} class="text-lg line-clamp-5">
               {(review as Result).content}
             </p>
             <button id={`${(review as Result).id}`}>View More</button>
