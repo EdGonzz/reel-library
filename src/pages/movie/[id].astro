@@ -98,11 +98,25 @@ function getReviews(reviews: MoviesReviews) {
 }
 
 function getTrailer(movieVideos: VideoMovies) {
-  let trailer = movieVideos.results.filter((result: VideoResult) => {
-    return result.type === "Trailer";
-  });
+  if (!movieVideos.results.length) return "";
 
-  return trailer[0].key;
+  let trailer = movieVideos.results.find(
+    (result: VideoResult) =>
+      result.type === "Trailer" && result.official && result.site === "YouTube"
+  );
+
+  if (!trailer) {
+    trailer = movieVideos.results.find(
+      (result: VideoResult) =>
+        result.type === "Trailer" && result.site === "YouTube"
+    );
+  }
+
+  if (!trailer && movieVideos.results.length > 0) {
+    trailer = movieVideos.results[0];
+  }
+
+  return trailer ? trailer.key : "";
 }
 ---
 

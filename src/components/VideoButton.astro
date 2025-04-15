@@ -6,37 +6,39 @@ interface Props {
 const { key } = Astro.props;
 ---
 
-<button
-  class="w-fit bg-accent-100/70 border-1 border-bg-200 rounded-lg px-4 py-2 text-sm font-semibold text-white hover:bg-primary-300/70 hover:scale-105"
-  id="open-modal"
-  aria-label="Watch Trailer"
->
-  Watch Trailer
-</button>
+{key && (
+  <button
+    class="w-fit bg-accent-100/70 border-1 border-bg-200 rounded-lg px-4 py-2 text-sm font-semibold text-white hover:bg-primary-300/70 hover:scale-105"
+    id="open-modal"
+    aria-label="Watch Trailer"
+  >
+    Watch Trailer
+  </button>
 
-<dialog id="my-modal" closedby="any">
-  <div class="modal-content">
-    <lite-youtube
-      videoid={`${key}`}
-      class="aspect-video w-full"
-      autopause
-      rel="0"
-    >
-      <a
-        class="lite-youtube-fallback"
-        href=`https://www.youtube.com/watch?v=${key}`
-        >Watch on YouTube: "Sample output of devtools-to-video cli tool"</a
+  <dialog id="my-modal" closedby="any">
+    <div class="modal-content">
+      <lite-youtube
+        videoid={`${key}`}
+        class="aspect-video w-full"
+        autopause
+        rel="0"
       >
-    </lite-youtube>
-    <form class="flex flex-row justify-center mt-2" method="dialog">
-      <button
-        class="w-fit bg-accent-100/70 border-1 border-bg-200 rounded-lg px-4 py-2 text-sm font-semibold text-white hover:bg-primary-300/70 hover:scale-105"
-      >
-        Close
-      </button>
-    </form>
-  </div>
-</dialog>
+        <a
+          class="lite-youtube-fallback"
+          href={`https://www.youtube.com/watch?v=${key}`}
+          >Watch on YouTube: "Sample output of devtools-to-video cli tool"
+        </a>
+      </lite-youtube>
+      <form class="flex flex-row justify-center mt-2" method="dialog">
+        <button
+          class="w-fit bg-accent-100/70 border-1 border-bg-200 rounded-lg px-4 py-2 text-sm font-semibold text-white hover:bg-primary-300/70 hover:scale-105"
+        >
+          Close
+        </button>
+      </form>
+    </div>
+  </dialog>
+)}
 
 <style>
   dialog {
@@ -115,10 +117,13 @@ const { key } = Astro.props;
 <script>
   import "@justinribeiro/lite-youtube";
 
-  const myModal = document.getElementById("my-modal") as HTMLDialogElement;
-  const openModal = document.getElementById("open-modal") as HTMLButtonElement;
+  const setupModal = () => {
+    const myModal = document.getElementById("my-modal") as HTMLDialogElement;
+    const openModal = document.getElementById("open-modal") as HTMLButtonElement;
+    openModal.addEventListener("click", () => {
+      myModal.showModal();
+    });
+  }
 
-  openModal.addEventListener("click", () => {
-    myModal.showModal();
-  });
+  document.addEventListener("astro:page-load", setupModal);
 </script>
