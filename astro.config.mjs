@@ -23,9 +23,7 @@ export default defineConfig({
   },
 
   experimental: {
-    svg: {
-      mode: 'sprite'
-    }
+    svg: true
   },
 
   adapter: vercel()
