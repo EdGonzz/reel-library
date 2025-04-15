@@ -102,14 +102,14 @@ function getTrailer(movieVideos: VideoMovies) {
     return result.type === "Trailer";
   });
 
-  return trailer[0];
+  return trailer[0].key;
 }
 ---
 
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
   <div class="flex flex-col gap-5 md:gap-10">
     <DetailsMovies
-      key=`${movieVideos ? getTrailer(movieVideos).key : ""}`
+      key=`${movieVideos ? getTrailer(movieVideos) : ""}`
       img=`${movieDetails?.poster_path}`
       title={`${movieDetails?.original_title}`}
       average={`${movieDetails?.vote_average.toFixed(1)}`}
