@@ -13,7 +13,7 @@ import ReviewsContainer from "@/components/ReviewsContainer.astro";
 
 export const prerender = false;
 
-const { id } = Astro.params;
+const { id: movieId } = Astro.params;
 
 let movieDetails;
 let releaseDate;
@@ -21,12 +21,15 @@ let credits;
 let similarMovies;
 let reviews;
 
-if (id) {
-  movieDetails = (await getDetailsMovie(id)) as DetailsMovie;
-  releaseDate = (await getDetailsMovie(id, "/release_dates")) as ReleaseDate;
-  credits = (await getDetailsMovie(id, "/credits")) as Credits;
-  similarMovies = (await getDetailsMovie(id, "/similar")) as SimilarMovies;
-  reviews = (await getDetailsMovie(id, "/reviews")) as MoviesReviews;
+if (movieId) {
+  movieDetails = (await getDetailsMovie(movieId)) as DetailsMovie;
+  releaseDate = (await getDetailsMovie(
+    movieId,
+    "/release_dates"
+  )) as ReleaseDate;
+  credits = (await getDetailsMovie(movieId, "/credits")) as Credits;
+  similarMovies = (await getDetailsMovie(movieId, "/similar")) as SimilarMovies;
+  reviews = (await getDetailsMovie(movieId, "/reviews")) as MoviesReviews;
 }
 
 function getRuntime(runtime: number) {
@@ -95,6 +98,7 @@ function getReviews(reviews: MoviesReviews) {
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
   <div class="flex flex-col gap-5 md:gap-10">
     <DetailsMovies
+      movieId={`${movieId}`}
       img=`${movieDetails?.poster_path}`
       title={`${movieDetails?.original_title}`}
       average={`${movieDetails?.vote_average.toFixed(1)}`}

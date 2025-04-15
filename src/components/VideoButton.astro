@@ -1,0 +1,139 @@
+---
+import { getDetailsMovie } from "@/services/getDetailsMovie";
+import { type VideoMovies, type Result } from "@/types/VideoMovies";
+
+interface Props {
+  movieId: string;
+}
+
+const { movieId } = Astro.props;
+
+const movieVideos = (await getDetailsMovie(movieId, "/videos")) as VideoMovies;
+
+function getTrailer(movieVideos: VideoMovies) {
+  let trailer = movieVideos.results.filter((result: Result) => {
+    return result.type === "Trailer";
+  });
+
+  return trailer[0];
+}
+
+const youtubeKey = getTrailer(movieVideos).key;
+console.log(youtubeKey);
+---
+
+<button
+  class="w-fit bg-accent-100/70 border-1 border-bg-200 rounded-lg px-4 py-2 text-sm font-semibold text-white hover:bg-primary-300/70 hover:scale-105"
+  id="open-modal"
+  aria-label="Watch Trailer"
+>
+  Watch Trailer
+</button>
+
+<dialog id="my-modal" closedby="any">
+  <div class="modal-content">
+    <lite-youtube
+      videoid={`${youtubeKey}`}
+      class="aspect-video w-full"
+      autopause
+    >
+      <a
+        class="lite-youtube-fallback"
+        href=`https://www.youtube.com/watch?v=${youtubeKey}`
+        >Watch on YouTube: "Sample output of devtools-to-video cli tool"</a
+      >
+    </lite-youtube>
+    <form class="flex flex-row justify-center mt-2" method="dialog">
+      <button
+        class="w-fit bg-accent-100/70 border-1 border-bg-200 rounded-lg px-4 py-2 text-sm font-semibold text-white hover:bg-primary-300/70 hover:scale-105"
+      >
+        Close
+      </button>
+    </form>
+  </div>
+</dialog>
+
+<style>
+  dialog {
+    width: 95vw;
+    max-width: 800px;
+    background: none;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    transition:
+      scale 0.3s ease,
+      display 0.3s ease allow-discrete;
+    scale: 0;
+  }
+
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  dialog[open] {
+    scale: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: scale 0.3s ease-in-out;
+
+    @starting-style {
+      scale: 0;
+    }
+  }
+
+  .modal-content {
+    position: relative;
+    margin: 0 auto;
+    width: 90vw;
+    max-width: 800px;
+    overflow: hidden;
+    padding: 0.5rem;
+  }
+
+  .lite-youtube-fallback {
+    aspect-ratio: 16 / 9; /* matches YouTube player */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* right-facing triangle "Play" icon */
+  .lite-youtube-fallback::before {
+    display: block;
+    content: "";
+    border: solid transparent;
+    border-width: 2em 0 2em 3em;
+    border-left-color: red;
+  }
+
+  .lite-youtube-fallback:hover::before {
+    border-left-color: #fff;
+  }
+
+  .lite-youtube-fallback:focus {
+    outline: 2px solid red;
+  }
+</style>
+
+<script>
+  import "@justinribeiro/lite-youtube";
+
+  const myModal = document.getElementById("my-modal") as HTMLDialogElement;
+  const openModal = document.getElementById("open-modal") as HTMLButtonElement;
+
+  openModal.addEventListener("click", () => {
+    myModal.showModal();
+  });
+</script>

@@ -2,8 +2,10 @@
 import type { Cast } from "@/types/apiCreditsMovie.ts";
 import CategoriesButtons from "./CategoriesButtons.astro";
 import ExtraDetailsMovie from "./ExtraDetailsMovie.astro";
+import VideoButton from "./VideoButton.astro";
 
 interface Props {
+  movieId: string;
   img: string;
   title: string;
   average: string;
@@ -16,6 +18,7 @@ interface Props {
 }
 
 const {
+  movieId,
   img,
   title,
   average,
@@ -64,5 +67,6 @@ const {
         {typeof credits[0] === "object" ? credits[0].name : "unknown"}
       </p>
     </div>
+    <VideoButton movieId={movieId} />
   </div>
 </section>
