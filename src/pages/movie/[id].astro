@@ -4,6 +4,7 @@ import { type ReleaseDate, type Result } from "@/types/apiReleaseDate";
 import { type Credits, type Cast } from "@/types/apiCreditsMovie";
 import { type SimilarMovies } from "@/types/apiSimilarMovies";
 import { type MoviesReviews } from "@/types/apiMovieReviews";
+import { type VideoMovies, type VideoResult } from "@/types/VideoMovies";
 import { getDetailsMovie } from "@/services/getDetailsMovie";
 import Layout from "@/layouts/Layout.astro";
 import DetailsMovies from "@/components/DetailsMovies.astro";
@@ -20,6 +21,7 @@ let releaseDate;
 let credits;
 let similarMovies;
 let reviews;
+let movieVideos;
 
 if (movieId) {
   movieDetails = (await getDetailsMovie(movieId)) as DetailsMovie;
@@ -30,6 +32,7 @@ if (movieId) {
   credits = (await getDetailsMovie(movieId, "/credits")) as Credits;
   similarMovies = (await getDetailsMovie(movieId, "/similar")) as SimilarMovies;
   reviews = (await getDetailsMovie(movieId, "/reviews")) as MoviesReviews;
+  movieVideos = (await getDetailsMovie(movieId, "/videos")) as VideoMovies;
 }
 
 function getRuntime(runtime: number) {
@@ -93,12 +96,20 @@ function getReviews(reviews: MoviesReviews) {
     return [];
   }
 }
+
+function getTrailer(movieVideos: VideoMovies) {
+  let trailer = movieVideos.results.filter((result: VideoResult) => {
+    return result.type === "Trailer";
+  });
+
+  return trailer[0];
+}
 ---
 
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
   <div class="flex flex-col gap-5 md:gap-10">
     <DetailsMovies
-      movieId={`${movieId}`}
+      key=`${movieVideos ? getTrailer(movieVideos).key : ""}`
       img=`${movieDetails?.poster_path}`
       title={`${movieDetails?.original_title}`}
       average={`${movieDetails?.vote_average.toFixed(1)}`}

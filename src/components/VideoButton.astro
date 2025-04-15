@@ -1,24 +1,9 @@
 ---
-import { getDetailsMovie } from "@/services/getDetailsMovie";
-import { type VideoMovies, type Result } from "@/types/VideoMovies";
-
 interface Props {
-  movieId: string;
+  key: string;
 }
 
-const { movieId } = Astro.props;
-
-const movieVideos = (await getDetailsMovie(movieId, "/videos")) as VideoMovies;
-
-function getTrailer(movieVideos: VideoMovies) {
-  let trailer = movieVideos.results.filter((result: Result) => {
-    return result.type === "Trailer";
-  });
-
-  return trailer[0];
-}
-
-const youtubeKey = getTrailer(movieVideos).key;
+const { key } = Astro.props;
 ---
 
 <button
@@ -32,7 +17,7 @@ const youtubeKey = getTrailer(movieVideos).key;
 <dialog id="my-modal" closedby="any">
   <div class="modal-content">
     <lite-youtube
-      videoid={`${youtubeKey}`}
+      videoid={`${key}`}
       class="aspect-video w-full"
       autopause
       posterloading="lazy"
@@ -40,7 +25,7 @@ const youtubeKey = getTrailer(movieVideos).key;
     >
       <a
         class="lite-youtube-fallback"
-        href=`https://www.youtube.com/watch?v=${youtubeKey}`
+        href=`https://www.youtube.com/watch?v=${key}`
         >Watch on YouTube: "Sample output of devtools-to-video cli tool"</a
       >
     </lite-youtube>

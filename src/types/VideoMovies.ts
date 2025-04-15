@@ -1,9 +1,9 @@
 export type VideoMovies = {
   id: number;
-  results: Result[];
+  results: VideoResult[];
 };
 
-export type Result = {
+export type VideoResult = {
   iso_639_1: string;
   iso_3166_1: string;
   name: string;
