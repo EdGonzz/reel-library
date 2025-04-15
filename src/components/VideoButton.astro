@@ -19,7 +19,6 @@ function getTrailer(movieVideos: VideoMovies) {
 }
 
 const youtubeKey = getTrailer(movieVideos).key;
-console.log(youtubeKey);
 ---
 
 <button
@@ -36,6 +35,8 @@ console.log(youtubeKey);
       videoid={`${youtubeKey}`}
       class="aspect-video w-full"
       autopause
+      posterloading="lazy"
+      rel="0"
     >
       <a
         class="lite-youtube-fallback"
