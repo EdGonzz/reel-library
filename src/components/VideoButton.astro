@@ -1,9 +1,38 @@
 ---
+import { getDetailsMovie } from "@/services/getDetailsMovie";
+import { type VideoMovies, type VideoResult } from "@/types/VideoMovies";
+
 interface Props {
-  key: string;
+  movieId: string;
 }
 
-const { key } = Astro.props;
+const { movieId } = Astro.props;
+
+const movieVideos = (await getDetailsMovie(movieId, "/videos")) as VideoMovies;
+
+function getTrailer(movieVideos: VideoMovies) {
+  if (!movieVideos.results.length) return "";
+
+  let trailer = movieVideos.results.find(
+    (result: VideoResult) =>
+      result.type === "Trailer" && result.official && result.site === "YouTube"
+  );
+
+  if (!trailer) {
+    trailer = movieVideos.results.find(
+      (result: VideoResult) =>
+        result.type === "Trailer" && result.site === "YouTube"
+    );
+  }
+
+  if (!trailer && movieVideos.results.length > 0) {
+    trailer = movieVideos.results[0];
+  }
+
+  return trailer ? trailer.key : "";
+}
+
+const key = getTrailer(movieVideos);
 ---
 
 {key && (

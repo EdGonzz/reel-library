@@ -21,7 +21,6 @@ let releaseDate;
 let credits;
 let similarMovies;
 let reviews;
-let movieVideos;
 
 if (movieId) {
   movieDetails = (await getDetailsMovie(movieId)) as DetailsMovie;
@@ -32,7 +31,6 @@ if (movieId) {
   credits = (await getDetailsMovie(movieId, "/credits")) as Credits;
   similarMovies = (await getDetailsMovie(movieId, "/similar")) as SimilarMovies;
   reviews = (await getDetailsMovie(movieId, "/reviews")) as MoviesReviews;
-  movieVideos = (await getDetailsMovie(movieId, "/videos")) as VideoMovies;
 }
 
 function getRuntime(runtime: number) {
@@ -96,34 +94,12 @@ function getReviews(reviews: MoviesReviews) {
     return [];
   }
 }
-
-function getTrailer(movieVideos: VideoMovies) {
-  if (!movieVideos.results.length) return "";
-
-  let trailer = movieVideos.results.find(
-    (result: VideoResult) =>
-      result.type === "Trailer" && result.official && result.site === "YouTube"
-  );
-
-  if (!trailer) {
-    trailer = movieVideos.results.find(
-      (result: VideoResult) =>
-        result.type === "Trailer" && result.site === "YouTube"
-    );
-  }
-
-  if (!trailer && movieVideos.results.length > 0) {
-    trailer = movieVideos.results[0];
-  }
-
-  return trailer ? trailer.key : "";
-}
 ---
 
 <Layout title=`${movieDetails?.original_title} - Reel Library`>
   <div class="flex flex-col gap-5 md:gap-10">
     <DetailsMovies
-      key=`${movieVideos ? getTrailer(movieVideos) : ""}`
+      movieId=`${movieId}`
       img=`${movieDetails?.poster_path}`
       title={`${movieDetails?.original_title}`}
       average={`${movieDetails?.vote_average.toFixed(1)}`}

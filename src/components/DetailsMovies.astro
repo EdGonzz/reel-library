@@ -5,7 +5,7 @@ import ExtraDetailsMovie from "./ExtraDetailsMovie.astro";
 import VideoButton from "./VideoButton.astro";
 
 interface Props {
-  key: string;
+  movieId: string;
   img: string;
   title: string;
   average: string;
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const {
-  key,
+  movieId,
   img,
   title,
   average,
@@ -67,6 +67,6 @@ const {
         {typeof credits[0] === "object" ? credits[0].name : "unknown"}
       </p>
     </div>
-    <VideoButton key={key || ""} />
+    <VideoButton movieId={movieId || ""} />
   </div>
 </section>
