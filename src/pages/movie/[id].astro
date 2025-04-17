@@ -1,6 +1,5 @@
 ---
 import { type DetailsMovie } from "@/types/apiDetailsMovies";
-import { type SimilarMovies } from "@/types/apiSimilarMovies";
 import { type MoviesReviews } from "@/types/apiMovieReviews";
 import { getDetailsMovie } from "@/services/getDetailsMovie";
 import Layout from "@/layouts/Layout.astro";
@@ -14,27 +13,15 @@ export const prerender = false;
 const { id: movieId } = Astro.params;
 
 let movieDetails;
-let reviews;
 
 if (movieId) {
   movieDetails = (await getDetailsMovie(movieId)) as DetailsMovie;
-  reviews = (await getDetailsMovie(movieId, "/reviews")) as MoviesReviews;
 }
 
 function getRuntime(runtime: number) {
   const hours = Math.floor(runtime / 60);
   const minutes = Math.floor(runtime % 60);
   return `${hours}h ${minutes}m`;
-}
-
-function getReviews(reviews: MoviesReviews) {
-  let movies = reviews.results;
-
-  if (movies.length > 0) {
-    return movies.filter((movie) => movie.author_details?.avatar_path);
-  } else {
-    return [];
-  }
 }
 ---
 
@@ -43,7 +30,7 @@ function getReviews(reviews: MoviesReviews) {
     <DetailsMovies
       movieId=`${movieId}`
       img=`${movieDetails?.poster_path}`
-      title={`${movieDetails?.original_title}`}
+      title={`${movieDetails?.title}`}
       average={`${movieDetails?.vote_average.toFixed(1)}`}
       alt={`${movieDetails?.original_title}`}
       overview={`${movieDetails?.overview}`}
@@ -51,7 +38,7 @@ function getReviews(reviews: MoviesReviews) {
       genres={movieDetails?.genres || []}
     />
     <TopCast movieId={`${movieId}`} />
-    <ReviewsContainer reviews={reviews ? getReviews(reviews) : []} />
+    <ReviewsContainer movieId={`${movieId}`} />
     <SimilarMoviesContainer movieId={`${movieId}`} />
   </div>
 </Layout>
