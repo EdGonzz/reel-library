@@ -1,11 +1,28 @@
 ---
-import { type Cast } from "@/types/apiCreditsMovie";
+import { type Credits, type Cast } from "@/types/apiCreditsMovie";
+import { getDetailsMovie } from "@/services/getDetailsMovie";
 
 interface Props {
-  cast: Cast[];
+  movieId: string;
 }
 
-const { cast } = Astro.props;
+const { movieId } = Astro.props;
+
+const credits = (await getDetailsMovie(movieId, "/credits")) as Credits;
+
+function getTopBilledCast(credits: Credits) {
+  let cast = credits.cast.filter(
+    (cast: Cast) => cast && cast.order !== undefined && cast.order < 6
+  );
+
+  if (cast.length > 0) {
+    return cast.sort((a, b) => b.popularity - a.popularity);
+  } else {
+    return [];
+  }
+}
+
+const topBilledCast = getTopBilledCast(credits);
 ---
 
 <section class="flex flex-col gap-5 bg-bg-300 px-4 md:px-6">
@@ -14,7 +31,7 @@ const { cast } = Astro.props;
     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-4"
   >
     {
-      cast.map((actor: Cast) => {
+      topBilledCast.map((actor: Cast) => {
         return (
           <div class="flex flex-col items-center text-center">
             <img

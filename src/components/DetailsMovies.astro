@@ -1,8 +1,9 @@
 ---
-import type { Cast } from "@/types/apiCreditsMovie.ts";
+import { type Credits, type Cast } from "@/types/apiCreditsMovie.ts";
 import CategoriesButtons from "./CategoriesButtons.astro";
 import ExtraDetailsMovie from "./ExtraDetailsMovie.astro";
 import VideoButton from "./VideoButton.astro";
+import { getDetailsMovie } from "@/services/getDetailsMovie";
 
 interface Props {
   movieId: string;
@@ -13,20 +14,24 @@ interface Props {
   overview: string;
   runtime: string;
   genres: Object[];
-  credits: Cast[] | string;
 }
 
-const {
-  movieId,
-  img,
-  title,
-  average,
-  alt,
-  overview,
-  runtime,
-  genres,
-  credits,
-} = Astro.props;
+const { movieId, img, title, average, alt, overview, runtime, genres } =
+  Astro.props;
+
+const credits = await getDetailsMovie(movieId, "/credits");
+
+function getMostPopularDirector(credits: Credits) {
+  let directors = credits.crew.filter(
+    (crew: Cast) => crew && crew.department === "Directing"
+  );
+
+  if (directors.length > 0) {
+    return directors.sort((a, b) => b.popularity - a.popularity);
+  } else {
+    return [];
+  }
+}
 ---
 
 <section id="movie" class="bg-bg-300 h-auto w-full flex flex-col md:flex-row">
@@ -62,7 +67,7 @@ const {
     <div class="flex flex-col gap-3">
       <h3 class="text-2xl font-bold">Director</h3>
       <p class="text-lg">
-        {typeof credits[0] === "object" ? credits[0].name : "unknown"}
+        {credits ? getMostPopularDirector(credits)[0].name : "unknown"}
       </p>
     </div>
     <VideoButton movieId={movieId || ""} />

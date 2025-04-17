@@ -1,20 +1,35 @@
 ---
-import type { Result } from "@/types/apiSimilarMovies";
+import { type SimilarMovies, type Result } from "@/types/apiSimilarMovies";
 import MoviesCard from "@/components/MoviesCard.astro";
 import MovieContainer from "./MovieContainer.astro";
 import SectionContainer from "./SectionContainer.astro";
+import { getDetailsMovie } from "@/services/getDetailsMovie";
 
 interface Props {
-  similarMovies: Object[];
+  movieId: string;
 }
 
-const { similarMovies } = Astro.props;
+const { movieId } = Astro.props;
+
+const similarMovies = await getDetailsMovie(movieId, "/similar");
+
+function getSimilarMovies(similarMovies: SimilarMovies) {
+  let movies = similarMovies.results;
+
+  if (movies.length > 0) {
+    return movies.sort((a, b) => b.popularity - a.popularity);
+  } else {
+    return [];
+  }
+}
+
+const similarMoviesFiltered = getSimilarMovies(similarMovies);
 ---
 
 <SectionContainer title="Similar Movies" id="similar-movies">
   <MovieContainer>
     {
-      similarMovies.map((movie: Object) => (
+      similarMoviesFiltered.map((movie: Object) => (
         <MoviesCard
           id={(movie as Result).id}
           title={(movie as Result).title}
