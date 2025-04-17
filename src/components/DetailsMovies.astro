@@ -12,7 +12,6 @@ interface Props {
   alt: string;
   overview: string;
   runtime: string;
-  realeaseDate: any;
   genres: Object[];
   credits: Cast[] | string;
 }
@@ -25,7 +24,6 @@ const {
   alt,
   overview,
   runtime,
-  realeaseDate,
   genres,
   credits,
 } = Astro.props;
@@ -45,9 +43,9 @@ const {
         {title}
       </h2>
       <ExtraDetailsMovie
+        movieId={movieId}
         average={average}
         runtime={runtime}
-        realeaseDate={realeaseDate}
       />
       <div class="flex flex-wrap gap-1">
         {

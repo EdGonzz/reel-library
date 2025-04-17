@@ -1,15 +1,39 @@
 ---
+import { getDetailsMovie } from "@/services/getDetailsMovie";
+import { type ReleaseDate, type Result } from "@/types/apiReleaseDate";
+
 import Calendar from "@/assets/svg/Calendar.svg";
 import Clock from "@/assets/svg/Clock.svg";
 import Star from "@/assets/svg/Star.svg";
 
 interface Props {
+  movieId: string;
   average: string;
   runtime: string;
-  realeaseDate: string;
 }
 
-const { average, runtime, realeaseDate } = Astro.props;
+const { average, runtime, movieId } = Astro.props;
+
+const releaseDate = (await getDetailsMovie(
+  movieId,
+  "/release_dates"
+)) as ReleaseDate;
+
+function getReleaseDate(releaseDate: ReleaseDate) {
+  return releaseDate.results.map((result: Result) => {
+    if (result.iso_3166_1 === "EE" || result.iso_3166_1 === "US") {
+      let date = new Date(result.release_dates[0].release_date);
+      let day = date.getUTCDate();
+      let month = date.getUTCMonth() + 1;
+      let year = date.getUTCFullYear();
+      return `${month}/${day}/${year}`;
+    } else {
+      return "";
+    }
+  });
+}
+
+const realeaseDate = getReleaseDate(releaseDate);
 ---
 
 <div class="flex items-center gap-2 opacity-80">
