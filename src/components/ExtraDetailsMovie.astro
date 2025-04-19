@@ -20,17 +20,18 @@ const releaseDate = (await getDetailsMovie(
 )) as ReleaseDate;
 
 function getReleaseDate(releaseDate: ReleaseDate) {
-  return releaseDate.results.map((result: Result) => {
-    if (result.iso_3166_1 === "EE" || result.iso_3166_1 === "US") {
-      let date = new Date(result.release_dates[0].release_date);
-      let day = date.getUTCDate();
-      let month = date.getUTCMonth() + 1;
-      let year = date.getUTCFullYear();
-      return `${month}/${day}/${year}`;
-    } else {
-      return "";
-    }
-  });
+  const result = releaseDate.results.find(
+    (result: Result) => result.iso_3166_1 === "EE" || result.iso_3166_1 === "US"
+  );
+
+  if (!result) return "";
+
+  const date = new Date(result.release_dates[0].release_date);
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1;
+  const year = date.getUTCFullYear();
+
+  return `${day}/${month}/${year}`;
 }
 
 const realeaseDate = getReleaseDate(releaseDate);
