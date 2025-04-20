@@ -73,20 +73,24 @@ const reviewsFiltered = getReviews(reviews);
     "#reviews-container-text"
   ) as NodeListOf<HTMLElement>;
 
-  reviewsContainerText.forEach((element) => {
-    element.addEventListener("click", (e) => {
-      const target = e.target as HTMLElement;
+  const setUpReviewsContainerText = () => {
+    reviewsContainerText.forEach((element) => {
+      element.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
 
-      if (target.tagName === "BUTTON") {
-        const reviewID = target.id;
-        const reviewText = document.getElementById(reviewID);
+        if (target.tagName === "BUTTON") {
+          const reviewID = target.id;
+          const reviewText = document.getElementById(reviewID);
 
-        if (reviewText) {
-          reviewText.classList.toggle("line-clamp-8");
-          target.textContent =
-            target.textContent === "View More" ? "View Less" : "View More";
+          if (reviewText) {
+            reviewText.classList.toggle("line-clamp-5");
+            target.textContent =
+              target.textContent === "View More" ? "View Less" : "View More";
+          }
         }
-      }
+      });
     });
-  });
+  };
+
+  document.addEventListener("astro:page-load", setUpReviewsContainerText);
 </script>
