@@ -10,7 +10,10 @@ export const addDotBtnsAndClickHandlers = (
   const addDotBtnsWithClickHandlers = (): void => {
     dotsNode.innerHTML = emblaApi
       .scrollSnapList()
-      .map(() => '<button class="embla__dot" type="button"></button>')
+      .map(
+        () =>
+          '<button class="embla__dot" aria-label="Dots Buttom" type="button"></button>'
+      )
       .join("");
 
     const scrollTo = (index: number): void => {
