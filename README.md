@@ -1,48 +1,82 @@
-# Astro Starter Kit: Basics
+<a name="readme-top"></a>
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+![Reel Library](./public/desktop-mockup.webp "Reel Library")
+![Reel Library](./public/mobile-mockup.webp "Reel Library")
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+# Reel Library <img style="height: 40px" src="./public/favicon.svg" alt="Reel Library">
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Reel Library is a website for browsing movie reviews and trailers — a simple way to find the best movie to watch. It was developed during the <a href="https://platzi.com/cursos/api-practico/" target="_blank">Curso de API REST con Javascript: Ejemplos con APIs reales</a> on **Platzi**. The project demonstrates API consumption and DOM manipulation using JavaScript and TypeScript.
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## Development
 
-## 🚀 Project Structure
+<div align="center">
+  <a target="_blank" href="https://pagespeed.web.dev/analysis/https-reel-library-vercel-app/kmw7sopqq7?form_factor=desktop&category=performance&category=accessibility&category=best-practices&category=seo&hl=en-US&utm_source=lh-chrome-ext" target="_blank">
+    Lighthouse Report
+  </a>
+</div>
 
-Inside of your Astro project, you'll see the following folders and files:
+In this project, I reached several milestones:
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- First time using **Astro** for a web project. I learned how to use the **Environment Variables API Reference**, **Dynamic routes**, and **Creating Components**.
+- Learning how to use **TypeScript**. Learning the basics of TypeScript, including types, and interfaces.
+- Consuming the **TMDB API** to get movies, fetching data and updating the DOM dynamically based on API responses.
+- Deploying the project on **Vercel**. I learned how to deploy a web application using Vercel, including setting up the project and configuring the environment variables.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 🛠️ Technologies Used
 
-## 🧞 Commands
+- [Astro](https://astro.build/): A modern static site generator that allows you to build fast websites using components from various frameworks.
+- [Tailwind CSS](https://tailwindcss.com/): To style the application quickly and efficiently.
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript): For dynamic DOM manipulation and interaction.
+- [TypeScript](https://www.typescriptlang.org/): A superset of JavaScript that adds static types, making the code more robust and maintainable.
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-All commands are run from the root of the project, from a terminal:
+## Installation
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+1. Clone the repository to your local machine:
 
-## 👀 Want to learn more?
+   ```bash
+   git clone https://github.com/EdGonzz/reel-library.git
+   ```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+2. Navigate to the project directory:
+
+   ```bash
+   cd reel-library
+   ```
+
+3. Install the project dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+4. If you plan to modify the project, use the command `pnpm run dev` to start a development server.
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+## Usage
+
+Navigate to the project URL [here](https://reel-library.vercel.app/) to see the page in operation.
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+## Contribution
+
+1. Fork the project.
+2. Create a new branch for your changes (`git checkout -b my-new-branch`)
+3. Make your changes and commit (`git commit -am 'Add new feature'`)
+4. Test your changes locally to ensure everything works as expected.
+5. Push the branch (`git push origin my-new-branch`)
+6. Open a Pull Request.
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+## Authors
+
+- [Edwin Contreras](https://github.com/EdGonzz)
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
