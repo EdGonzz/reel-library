@@ -101,7 +101,8 @@ body {
   object-fit: contain;
 
   @media (min-width: 768px) {
-    width: 100%;
+    width: 500px;
+    height: 255px;
     min-height: 255px;
   }
 }
