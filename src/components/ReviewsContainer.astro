@@ -35,7 +35,7 @@ const reviewsFiltered = getReviews(reviews);
               <img
                 src={`https://image.tmdb.org/t/p/w500${(review as Result).author_details.avatar_path}`}
                 alt={`${(review as Result).author_details.name}`}
-                class="w-12 h-12 rounded-full"
+                class="poster-img w-12 h-12 rounded-full"
               />
               <div class="w-full flex flex-col gap-1">
                 <div class="w-full flex items-center justify-between">
@@ -72,6 +72,7 @@ const reviewsFiltered = getReviews(reviews);
   const reviewsContainerText = document.querySelectorAll(
     "#reviews-container-text"
   ) as NodeListOf<HTMLElement>;
+  const img = document.querySelector(".poster-img") as HTMLImageElement;
 
   const setUpReviewsContainerText = () => {
     reviewsContainerText.forEach((element) => {
@@ -89,6 +90,10 @@ const reviewsFiltered = getReviews(reviews);
           }
         }
       });
+    });
+
+    img.addEventListener("load", () => {
+      img.classList.add("loaded");
     });
   };
 
