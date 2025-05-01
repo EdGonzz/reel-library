@@ -72,7 +72,6 @@ const reviewsFiltered = getReviews(reviews);
   const reviewsContainerText = document.querySelectorAll(
     "#reviews-container-text"
   ) as NodeListOf<HTMLElement>;
-  const img = document.querySelector(".poster-img") as HTMLImageElement;
 
   const setUpReviewsContainerText = () => {
     reviewsContainerText.forEach((element) => {
@@ -90,10 +89,6 @@ const reviewsFiltered = getReviews(reviews);
           }
         }
       });
-    });
-
-    img.addEventListener("load", () => {
-      img.classList.add("loaded");
     });
   };
 

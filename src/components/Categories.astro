@@ -156,10 +156,5 @@ export const prerender = true;
             `;
     }
   };
-  const img = document.querySelector(".poster-img") as HTMLImageElement;
-
-  img.addEventListener("load", () => {
-    img.classList.add("loaded");
-  });
   document.addEventListener("astro:page-load", setupGenresContainer);
 </script>

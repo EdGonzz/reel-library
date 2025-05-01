@@ -130,15 +130,6 @@ body {
   );
 }
 
-.poster-image {
-  transition: opacity 0.3s;
-  opacity: 0;
-}
-
-.poster-image.loaded {
-  opacity: 1;
-}
-
 .embla__slide__info {
   margin-top: 0.5rem;
   text-align: center;

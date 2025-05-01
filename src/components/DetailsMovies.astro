@@ -73,10 +73,3 @@ function getMostPopularDirector(credits: Credits) {
     <VideoButton movieId={movieId || ""} />
   </div>
 </section>
-
-<script>
-  const img = document.querySelector(".poster-img") as HTMLImageElement;
-  img.addEventListener("load", () => {
-    img.classList.add("loaded");
-  });
-</script>

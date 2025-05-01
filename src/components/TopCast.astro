@@ -47,15 +47,3 @@ const topBilledCast = getTopBilledCast(credits);
     }
   </div>
 </section>
-
-<script>
-  const img = document.querySelectorAll(
-    ".poster-img"
-  ) as NodeListOf<HTMLImageElement>;
-
-  img.forEach((image) => {
-    image.addEventListener("load", () => {
-      image.classList.add("loaded");
-    });
-  });
-</script>

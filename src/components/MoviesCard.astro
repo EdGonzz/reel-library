@@ -33,11 +33,3 @@ const { id, title, image, average } = Astro.props;
     </div>
   </div>
 </a>
-
-<script>
-  const img = document.querySelector(".poster-img") as HTMLImageElement;
-
-  img.addEventListener("load", () => {
-    img.classList.add("loaded");
-  });
-</script>
