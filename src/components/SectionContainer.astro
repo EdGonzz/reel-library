@@ -2,14 +2,15 @@
 interface Props {
   title: string;
   id: string;
+  titleId?: string;
 }
 
-const { title, id } = Astro.props;
+const { title, id, titleId } = Astro.props;
 ---
 
 <section id=`${id}` class=`bg-bg-300 h-full w-full px-4 flex flex-col lg:px-6`>
   <header class="w-full h-16 flex items-center">
-    <h2 id="title" class="text-2xl font-bold">{title}</h2>
+    <h2 id={titleId} class="text-2xl font-bold">{title}</h2>
   </header>
   <slot />
 </section>

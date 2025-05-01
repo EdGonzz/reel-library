@@ -26,7 +26,11 @@ export const prerender = true;
     }
   </div>
 </SectionContainer>
-<SectionContainer title="Popular Movies" id="movies-section">
+<SectionContainer
+  titleId="titleMovie"
+  title="Popular Movies"
+  id="movies-section"
+>
   <MovieContainer>
     {
       movies.map((movie) => (
@@ -110,9 +114,13 @@ export const prerender = true;
     }
 
     function printMovies(movies: Moviesbycategory, CategoriName: string) {
-      const title = document.getElementById("title") as HTMLElement;
+      const title = document.getElementById("titleMovie") as HTMLElement;
 
-      title.innerHTML = `${CategoriName} Movies`;
+      if (CategoriName.includes("Movie")) {
+        title.innerHTML = `${CategoriName}`;
+      } else {
+        title.innerHTML = `${CategoriName} Movies`;
+      }
 
       const moviesContainer = document.getElementById(
         "movies-container"
