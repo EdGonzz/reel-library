@@ -18,7 +18,7 @@ const { id, title, image, average } = Astro.props;
   <picture class="relative md:h-full md:w-full">
     <img
       loading="lazy"
-      class="embla__slide__img mask-bottom"
+      class="poster-img embla__slide__img mask-bottom"
       src={image}
       alt={title}
     />
@@ -33,3 +33,11 @@ const { id, title, image, average } = Astro.props;
     </div>
   </div>
 </a>
+
+<script>
+  const img = document.querySelector(".poster-img") as HTMLImageElement;
+
+  img.addEventListener("load", () => {
+    img.classList.add("loaded");
+  });
+</script>

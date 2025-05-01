@@ -26,7 +26,7 @@ export const prerender = true;
     }
   </div>
 </SectionContainer>
-<SectionContainer title="Popular Movies" id="movies-container">
+<SectionContainer title="Popular Movies" id="movies-section">
   <MovieContainer>
     {
       movies.map((movie) => (
@@ -110,45 +110,48 @@ export const prerender = true;
     }
 
     function printMovies(movies: Moviesbycategory, CategoriName: string) {
+      const title = document.getElementById("title") as HTMLElement;
+
+      title.innerHTML = `${CategoriName} Movies`;
+
       const moviesContainer = document.getElementById(
         "movies-container"
       ) as HTMLElement;
 
       moviesContainer.innerHTML = `
-        <header class="w-full h-16 flex items-center">
-          <h2 class="text-2xl font-bold">${CategoriName} Movies</h2>
-        </header>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        ${movies.results
-          .map(
-            (movie) => `
-          <a href="/movie/${movie.id}" class="hover:scale-105 transition-transform" data-astro-reload>
-            <article class="relative">
-              <picture class="relative md:h-full md:w-full">
-                <img 
-                  src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
-                  alt="${movie.title}"
-                  class="mask-bottom w-full object-contain rounded-2xl"
-                />
-              </picture>
-              <div class="absolute bottom-0 text-start mt-0 p-2 bg-black/50 backdrop-saturate-150 text-white md:pl-4 rounded-b-2xl w-full">
-                <h3 class="text-xl">${movie.title}</h3>
-                <div class="w-auto flex flex-row gap-2 items-center">
-                  <svg class="w-4 h-4 text-yellow-400 md:w-5 md:h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                  </svg>
-                  <p>${(movie.vote_average ?? 0).toFixed(1)}</p>
-                </div>
-              </div>
-            </article>
-          </a>
-        `
-          )
-          .join("")}
-        </div>
-        `;
+              ${movies.results
+                .map(
+                  (movie) => `
+                <a href="/movie/${movie.id}" class="hover:scale-105 transition-transform" data-astro-reload>
+                  <article class="relative">
+                    <picture class="relative md:h-full md:w-full">
+                      <img 
+                        src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+                        alt="${movie.title}"
+                        class="poster-img embla__slide__img mask-bottom"
+                      />
+                    </picture>
+                    <div class="absolute bottom-0 text-start mt-0 p-2 bg-black/50 backdrop-saturate-150 text-white md:pl-4 rounded-b-2xl w-full">
+                      <h3 class="text-xl">${movie.title}</h3>
+                      <div class="w-auto flex flex-row gap-2 items-center">
+                        <svg class="w-4 h-4 text-yellow-400 md:w-5 md:h-5" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        <p>${(movie.vote_average ?? 0).toFixed(1)}</p>
+                      </div>
+                    </div>
+                  </article>
+                </a>
+              `
+                )
+                .join("")}
+            `;
     }
   };
+  const img = document.querySelector(".poster-img") as HTMLImageElement;
 
+  img.addEventListener("load", () => {
+    img.classList.add("loaded");
+  });
   document.addEventListener("astro:page-load", setupGenresContainer);
 </script>
