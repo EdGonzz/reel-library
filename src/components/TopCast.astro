@@ -37,7 +37,7 @@ const topBilledCast = getTopBilledCast(credits);
             <img
               src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
               alt={actor.name}
-              class="w-24 h-24 object-cover rounded-full"
+              class="poster-img w-24 h-24 object-cover rounded-full"
             />
             <h3 class="text-lg font-bold">{actor.name}</h3>
             <p class="text-sm">{actor.character}</p>
@@ -47,3 +47,15 @@ const topBilledCast = getTopBilledCast(credits);
     }
   </div>
 </section>
+
+<script>
+  const img = document.querySelectorAll(
+    ".poster-img"
+  ) as NodeListOf<HTMLImageElement>;
+
+  img.forEach((image) => {
+    image.addEventListener("load", () => {
+      image.classList.add("loaded");
+    });
+  });
+</script>

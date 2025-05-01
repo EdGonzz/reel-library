@@ -38,7 +38,7 @@ function getMostPopularDirector(credits: Credits) {
   <img
     src={`https://image.tmdb.org/t/p/w400${img}`}
     alt={alt}
-    class="w-full object-cover md:max-w-[400px]"
+    class="poster-img w-full object-cover md:max-w-[400px]"
   />
   <div
     class="flex flex-col justify-between p-4 gap-10 md:w-10/12 md:justify-start md:p-6"
@@ -73,3 +73,10 @@ function getMostPopularDirector(credits: Credits) {
     <VideoButton movieId={movieId || ""} />
   </div>
 </section>
+
+<script>
+  const img = document.querySelector(".poster-img") as HTMLImageElement;
+  img.addEventListener("load", () => {
+    img.classList.add("loaded");
+  });
+</script>
