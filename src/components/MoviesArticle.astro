@@ -19,7 +19,11 @@ const { mobileImage, desktopImage, title, average, alt, id } = Astro.props;
 >
   <picture class="relative md:h-full md:w-full">
     <source media="(min-width: 768px)" srcset={desktopImage} />
-    <img class="embla__slide__img mask-bottom" src={mobileImage} alt={alt} />
+    <img
+      class="poster-img embla__slide__img mask-bottom"
+      src={mobileImage}
+      alt={alt}
+    />
   </picture>
   <div
     class="embla__slide__info md:bg-black/50 md:backdrop-saturate-150 md:text-white md:pl-4 md:rounded-b-2xl md:w-full"
@@ -33,3 +37,11 @@ const { mobileImage, desktopImage, title, average, alt, id } = Astro.props;
     </div>
   </div>
 </a>
+
+<script>
+  const img = document.querySelector(".poster-img") as HTMLImageElement;
+
+  img.addEventListener("load", () => {
+    img.classList.add("loaded");
+  });
+</script>
