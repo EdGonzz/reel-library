@@ -9,10 +9,7 @@ export const setUpLazyLoad = () => {
     threshold: 0,
   };
 
-  const callBack = (
-    entries: IntersectionObserverEntry[],
-    observer: IntersectionObserver
-  ) => {
+  let observer = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const img = entry.target as HTMLImageElement;
@@ -20,10 +17,8 @@ export const setUpLazyLoad = () => {
         img.classList.remove("lazy");
         observer.unobserve(img);
       }
-    });
-  };
-
-  let observer = new IntersectionObserver(callBack, options);
+    }, options);
+  });
 
   target.forEach((img) => {
     observer.observe(img);
