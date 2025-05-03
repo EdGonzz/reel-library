@@ -47,6 +47,7 @@ export const prerender = true;
 
 <script>
   import type { Moviesbycategory } from "@/types/apiMovieByCategory";
+  import { setUpLazyLoad } from "@/services/lazyLoad";
 
   const setupGenresContainer = () => {
     const genresContainer = document.getElementById(
@@ -134,9 +135,9 @@ export const prerender = true;
                   <article class="relative">
                     <picture class="relative md:h-full md:w-full">
                       <img 
-                        src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+                        data-src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
                         alt="${movie.title}"
-                        class="poster-img embla__slide__img mask-bottom"
+                        class="lazy poster-img embla__slide__img mask-bottom"
                       />
                     </picture>
                     <div class="absolute bottom-0 text-start mt-0 p-2 bg-black/50 backdrop-saturate-150 text-white md:pl-4 rounded-b-2xl w-full">
@@ -154,6 +155,7 @@ export const prerender = true;
                 )
                 .join("")}
             `;
+      setUpLazyLoad();
     }
   };
   document.addEventListener("astro:page-load", setupGenresContainer);

@@ -17,9 +17,8 @@ const { id, title, image, average } = Astro.props;
 >
   <picture class="relative md:h-full md:w-full">
     <img
-      loading="lazy"
-      class="poster-img embla__slide__img mask-bottom"
-      src={image}
+      class="lazy poster-img embla__slide__img mask-bottom"
+      data-src={image}
       alt={title}
     />
   </picture>
@@ -33,3 +32,11 @@ const { id, title, image, average } = Astro.props;
     </div>
   </div>
 </a>
+
+<script>
+  import { setUpLazyLoad } from "@/services/lazyLoad";
+
+  document.addEventListener("astro:page-load", setUpLazyLoad);
+
+  setUpLazyLoad();
+</script>
