@@ -50,7 +50,19 @@ In this project, I reached several milestones:
    pnpm install
    ```
 
-4. If you plan to modify the project, use the command `pnpm run dev` to start a development server.
+4. Create a `.env` file in the root directory and add your TMDB API key:
+
+   ```bash
+   API_TOKEN="your_api_key_here"
+   ```
+
+   Replace `your_api_key_here` with your actual TMDB API key.
+   You can obtain an API key by signing up at [TMDB](https://www.themoviedb.org/documentation/api).
+   Make sure to keep your API key secure and do not expose it in public repositories.
+   You can also use the `.env.example` file as a template.
+   In this project I use astro:env API to access the environment variables. If you want to know more about it, check the [Astro documentation](https://docs.astro.build/en/guides/environment-variables/#type-safe-environment-variables).
+
+5. If you plan to modify the project, use the command `pnpm run dev` to start a development server.
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
