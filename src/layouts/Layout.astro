@@ -9,9 +9,22 @@ export interface Props {
   description: string;
   keywords?: string;
   canonical?: string;
+  imageMobile?: string;
+  imageDesktop?: string;
+  altMobile?: string;
+  altDesktop?: string;
 }
 
-const { title, description, keywords, canonical } = Astro.props;
+const {
+  title,
+  description,
+  keywords,
+  canonical,
+  imageMobile = "https://raw.githubusercontent.com/EdGonzz/reel-library/refs/heads/main/public/mobile-mockup.webp",
+  imageDesktop = "https://github.com/EdGonzz/reel-library/raw/main/public/desktop-mockup.webp",
+  altMobile = "Mockup de interfaz móvil de una aplicación llamada “ReelLibrary” para ver información sobre películas. La imagen muestra dos teléfonos inteligentes: el de la izquierda presenta una pantalla de inicio con categorías de géneros cinematográficos, películas populares y una calificación de “Captain America: Brave New World”; el de la derecha muestra una vista detallada de esa misma película con su póster, título, duración (1h 58m), fecha de lanzamiento (14/2/2025), puntuación (6.1/10) y géneros asociados (Acción, Thriller, Ciencia ficción).",
+  altDesktop = "Mockup de interfaz de escritorio de la aplicación “ReelLibrary” mostrando detalles de películas. En el lado izquierdo, se muestra la pantalla principal con una galería de películas destacadas como “A Minecraft Movie” y “The Alto Knights”, además de categorías por género como drama, fantasía, historia, etc. En el lado derecho, se ve la vista detallada de la película “A Minecraft Movie”, con su póster, título, duración (1h 41m), fecha de estreno (4/4/2025), calificación (6.1/10), géneros (Familiar, Comedia, Aventura, Fantasía), sinopsis sobre un grupo que entra al Overworld y debe aprender a sobrevivir, y el nombre del director (Jared Hess).",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -40,31 +53,25 @@ const { title, description, keywords, canonical } = Astro.props;
     <link rel="canonical" href=`${canonical}` />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="ReelLibrary" />
+    <meta property="og:title" content=`${title}` />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://reel-library.vercel.app/" />
-    <meta
-      property="og:image"
-      content="https://raw.githubusercontent.com/EdGonzz/reel-library/refs/heads/main/public/mobile-mockup.webp"
-    />
+    <meta property="og:url" content=`${canonical}` />
+    <meta property="og:image" content=`${imageMobile}` />
     <meta property="og:image:type" content="image/webp" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:igame:alt" content="ReelLibrary mobile page" />
+    <meta property="og:igame:alt" content=`${altMobile}` />
     <meta property="og:description" content=`${description}` />
-    <meta property="og:site_name" content="ReelLibrary" />
+    <meta property="og:site_name" content=`${title}` />
 
     <!-- Open Graph (Twitter) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@Ed_Gonzz_" />
     <meta name="twitter:creator" content="@Ed_Gonzz_" />
     <meta property="twitter:domain" content="edgonzz.github.io" />
-    <meta name="twitter:title" content="ReelLibrary" />
-    <meta name="twitter:url" content="https://reel-library.vercel.app/" />
-    <meta
-      name="twitter:image"
-      content="https://raw.githubusercontent.com/EdGonzz/reel-library/refs/heads/main/public/desktop-mockup.webp"
-    />
-    <meta name="twitter:image:alt" content="ReelLibrary desktop page" />
+    <meta name="twitter:title" content=`${title}` />
+    <meta name="twitter:url" content=`${canonical}` />
+    <meta name="twitter:image" content=`${imageDesktop}` />
+    <meta name="twitter:image:alt" content=`${altDesktop}` />
     <meta name="twitter:description" content=`${description}` />
 
     <ClientRouter />

@@ -26,10 +26,13 @@ function getRuntime(runtime: number) {
 ---
 
 <Layout
-  title=`${movieDetails?.original_title} - Reel Library`
+  title=`${movieDetails?.title} - Reel Library`
   description=`${movieDetails?.overview}`
-  keywords=`${movieDetails?.original_title}, ${movieDetails?.genres.join(", ")}, películas, biblioteca de películas, TMDB API, movie database, películas populares, reseñas de películas, categorías de películas, Astro.js, desarrollo web, streaming, cartelera, movie ratings, React, JavaScript, frontend`
+  keywords=`${movieDetails?.title}, ${movieDetails?.genres.join(", ")}, ${movieDetails?.overview}, Reel Library, películas, biblioteca de películas, TMDB API, movie database, películas populares, reseñas de películas, categorías de películas, Astro.js, desarrollo web, streaming, cartelera, movie ratings, React, JavaScript, frontend`
   canonical=`https://reel-library.vercel.app/movie/${movieId}`
+  imageMobile=`https://image.tmdb.org/t/p/w400${movieDetails?.poster_path}`
+  imageDesktop=`https://image.tmdb.org/t/p/w400${movieDetails?.poster_path}`
+  altMobile=`${movieDetails?.title} page description in Reel Library`
 >
   <div class="flex flex-col gap-5 md:gap-10">
     <DetailsMovies
@@ -37,7 +40,7 @@ function getRuntime(runtime: number) {
       img=`${movieDetails?.poster_path}`
       title={`${movieDetails?.title}`}
       average={`${movieDetails?.vote_average.toFixed(1)}`}
-      alt={`${movieDetails?.original_title}`}
+      alt={`${movieDetails?.title}`}
       overview={`${movieDetails?.overview}`}
       runtime={movieDetails?.runtime ? getRuntime(movieDetails.runtime) : ""}
       genres={movieDetails?.genres || []}
