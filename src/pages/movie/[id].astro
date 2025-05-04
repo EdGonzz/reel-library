@@ -28,7 +28,7 @@ function getRuntime(runtime: number) {
 <Layout
   title=`${movieDetails?.title} - Reel Library`
   description=`${movieDetails?.overview}`
-  keywords=`${movieDetails?.title}, ${movieDetails?.genres.join(", ")}, ${movieDetails?.overview}, Reel Library, películas, biblioteca de películas, TMDB API, movie database, películas populares, reseñas de películas, categorías de películas, Astro.js, desarrollo web, streaming, cartelera, movie ratings, React, JavaScript, frontend`
+  keywords=`${movieDetails?.title}, ${movieDetails?.overview}, ${movieDetails?.genres.map((genre : any) => genre.name)}, Reel Library, películas, biblioteca de películas, TMDB API, movie database, películas populares, reseñas de películas, categorías de películas, Astro.js, desarrollo web, streaming, cartelera, movie ratings, React, JavaScript, frontend`
   canonical=`https://reel-library.vercel.app/movie/${movieId}`
   imageMobile=`https://image.tmdb.org/t/p/w400${movieDetails?.poster_path}`
   imageDesktop=`https://image.tmdb.org/t/p/w400${movieDetails?.poster_path}`
