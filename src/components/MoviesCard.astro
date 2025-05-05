@@ -1,5 +1,6 @@
 ---
 import Star from "@/assets/svg/Star.svg";
+import NotFound from "@/assets/svg/notFound.svg";
 
 interface Props {
   id: number;
@@ -15,12 +16,27 @@ const { id, title, image, average } = Astro.props;
   class="embla__slide hover:scale-105 transition-transform"
   href={`/movie/${id}`}
 >
-  <picture class="relative md:h-full md:w-full">
-    <img
-      class="lazy poster-img embla__slide__img mask-bottom"
-      data-src={image}
-      alt={title}
-    />
+  <picture class="h-full w-full">
+    {
+      image.includes("null") ? (
+        <div
+          aria-label="Image no found"
+          role="img"
+          class="w-full h-full rounded-2xl poster-img flex flex-col items-center justify-center gap-4"
+        >
+          <span class="text-lg md:text-xl xl:text-2xl font-extrabold">
+            Image no found
+          </span>
+          <NotFound class="size-24" aria-hidden="true" />
+        </div>
+      ) : (
+        <img
+          class="lazy poster-img embla__slide__img mask-bottom"
+          data-src={image}
+          alt={title}
+        />
+      )
+    }
   </picture>
   <div
     class="absolute bottom-0 text-start mt-0 p-2 bg-black/50 backdrop-saturate-150 text-white md:pl-4 rounded-b-2xl w-full"
