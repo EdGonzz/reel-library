@@ -133,12 +133,27 @@ export const prerender = true;
                   (movie) => `
                 <a href="/movie/${movie.id}" class="hover:scale-105 transition-transform" data-astro-reload>
                   <article class="relative">
-                    <picture class="relative md:h-full md:w-full">
-                      <img 
-                        data-src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
-                        alt="${movie.title}"
-                        class="lazy poster-img embla__slide__img mask-bottom"
-                      />
+                    <picture class="h-full w-full">
+                      ${
+                        movie.poster_path === null
+                          ? `        
+                          <div
+                            aria-label="Image no found"
+                            role="img"
+                            class="w-full h-full rounded-2xl poster-img flex flex-col items-center justify-center gap-4 min-h-[246px]"
+                          >
+                            <span class="text-lg md:text-xl xl:text-2xl font-extrabold">
+                              Image no found
+                            </span>
+                            <svg class="size-24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-photo-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 8h.01" /><path d="M13 21h-7a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v7" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3 3" /><path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0" /><path d="M22 22l-5 -5" /><path d="M17 22l5 -5" /></svg>
+                          </div>`
+                          : `
+                          <img 
+                            data-src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+                            alt="${movie.title}"
+                            class="lazy poster-img embla__slide__img mask-bottom"
+                          />`
+                      }
                     </picture>
                     <div class="absolute bottom-0 text-start mt-0 p-2 bg-black/50 backdrop-saturate-150 text-white md:pl-4 rounded-b-2xl w-full">
                       <h3 class="text-xl">${movie.title}</h3>
