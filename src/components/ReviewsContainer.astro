@@ -3,6 +3,7 @@ import { getDetailsMovie } from "@/services/getDetailsMovie";
 import { type MoviesReviews, type Result } from "@/types/apiMovieReviews";
 import SectionContainer from "./SectionContainer.astro";
 import Star from "@/assets/svg/Star.svg";
+import NotFound from "@/assets/svg/notFound.svg";
 
 interface Props {
   movieId: string;
@@ -29,14 +30,24 @@ const reviewsFiltered = getReviews(reviews);
   reviewsFiltered && reviewsFiltered.length > 0 && (
     <SectionContainer title="Reviews" id="reviews">
       <div id="reviews-container" class="flex flex-col gap-3">
-        {reviewsFiltered.map((review: Object) => (
+        {reviewsFiltered.map((review: Result) => (
           <div class="flex flex-col bg-bg-100/40 gap-1 rounded-xl border-2 border-bg-200 shadow-xl p-4">
             <div class="flex flex-row gap-2">
-              <img
-                src={`https://image.tmdb.org/t/p/w500${(review as Result).author_details.avatar_path}`}
-                alt={`${(review as Result).author_details.name}`}
-                class="poster-img w-12 h-12 rounded-full"
-              />
+              {review.author_details.avatar_path === null ? (
+                <div
+                  aria-label="Image no found"
+                  role="img"
+                  class="size-12 rounded-full poster-img flex flex-col items-center justify-center"
+                >
+                  <NotFound class="size-8" aria-hidden="true" />
+                </div>
+              ) : (
+                <img
+                  class="lazy poster-img size-12 object-cover rounded-full"
+                  data-src={`https://image.tmdb.org/t/p/w500${review.author_details.avatar_path}`}
+                  alt={review.author_details.name}
+                />
+              )}
               <div class="w-full flex flex-col gap-1">
                 <div class="w-full flex items-center justify-between">
                   <h3 class="text-xl font-bold text-balance">
@@ -69,6 +80,7 @@ const reviewsFiltered = getReviews(reviews);
 }
 
 <script>
+  import { setUpLazyLoad } from "@/services/lazyLoad";
   const reviewsContainerText = document.querySelectorAll(
     "#reviews-container-text"
   ) as NodeListOf<HTMLElement>;
@@ -90,6 +102,8 @@ const reviewsFiltered = getReviews(reviews);
         }
       });
     });
+
+    setUpLazyLoad();
   };
 
   document.addEventListener("astro:page-load", setUpReviewsContainerText);

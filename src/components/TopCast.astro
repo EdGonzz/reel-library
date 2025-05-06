@@ -57,3 +57,11 @@ const topBilledCast = getTopBilledCast(credits);
     }
   </div>
 </section>
+
+<script>
+  import { setUpLazyLoad } from "@/services/lazyLoad";
+
+  document.addEventListener("astro:page-load", setUpLazyLoad);
+
+  setUpLazyLoad();
+</script>
