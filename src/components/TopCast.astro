@@ -34,11 +34,21 @@ const topBilledCast = getTopBilledCast(credits);
       topBilledCast.map((actor: Cast) => {
         return (
           <div class="flex flex-col items-center text-center">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
-              alt={actor.name}
-              class="poster-img w-24 h-24 object-cover rounded-full"
-            />
+            {actor?.profile_path === null ? (
+              <div
+                aria-label="Image no found"
+                role="img"
+                class="size-24 rounded-full poster-img flex flex-col items-center justify-center"
+              >
+                <span class="text-lg font-extrabold">Image no found</span>
+              </div>
+            ) : (
+              <img
+                class="lazy poster-img size-24 object-cover rounded-full"
+                data-src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+                alt={actor.name}
+              />
+            )}
             <h3 class="text-lg font-bold">{actor.name}</h3>
             <p class="text-sm">{actor.character}</p>
           </div>
