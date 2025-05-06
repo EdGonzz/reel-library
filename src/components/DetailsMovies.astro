@@ -4,6 +4,7 @@ import CategoriesButtons from "./CategoriesButtons.astro";
 import ExtraDetailsMovie from "./ExtraDetailsMovie.astro";
 import VideoButton from "./VideoButton.astro";
 import { getDetailsMovie } from "@/services/getDetailsMovie";
+import NotFound from "@/assets/svg/notFound.svg";
 
 interface Props {
   movieId: string;
@@ -35,11 +36,31 @@ function getMostPopularDirector(credits: Credits) {
 ---
 
 <section id="movie" class="bg-bg-300 h-auto w-full flex flex-col md:flex-row">
-  <img
+  {
+    img.includes("null") ? (
+      <div
+        aria-label="Image no found"
+        role="img"
+        class="w-full min-h-[600px] poster-img flex flex-col items-center justify-center gap-4 md:max-w-[400px]"
+      >
+        <p class="text-lg md:text-xl xl:text-2xl font-extrabold">
+          Image no found
+        </p>
+        <NotFound class="size-24" aria-hidden="true" />
+      </div>
+    ) : (
+      <img
+        src={`https://image.tmdb.org/t/p/w400${img}`}
+        alt={alt}
+        class="poster-img w-full object-cover md:max-w-[400px]"
+      />
+    )
+  }
+  <!-- <img
     src={`https://image.tmdb.org/t/p/w400${img}`}
     alt={alt}
     class="poster-img w-full object-cover md:max-w-[400px]"
-  />
+  /> -->
   <div
     class="flex flex-col justify-between p-4 gap-10 md:w-10/12 md:justify-start md:p-6"
   >
