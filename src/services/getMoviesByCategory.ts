@@ -1,7 +1,10 @@
 import { API_TOKEN } from "astro:env/server";
 import { PUBLIC_DISCOVER_MOVIES } from "astro:env/server";
 
-export async function getMoviesByCategory(categoryID: string = "") {
+export async function getMoviesByCategory(
+  categoryID: string = "",
+  page: string = "1"
+) {
   const options = {
     method: "GET",
     headers: {
@@ -12,6 +15,7 @@ export async function getMoviesByCategory(categoryID: string = "") {
 
   const paramsConfig = {
     with_genres: categoryID,
+    page: page,
     sort_by: "vote_count.desc",
   } as any;
 
