@@ -98,7 +98,7 @@ export const prerender = true;
           console.error(error);
         }
       }
-    });
+    }); //Ajustar
 
     genresContainer.addEventListener("click", async (event) => {
       const target = event.target as HTMLElement;
@@ -115,7 +115,7 @@ export const prerender = true;
           console.error(error);
         }
       }
-    });
+    }); //Ajustar
 
     // Ajustar
     window.addEventListener("popstate", async () => {
@@ -160,7 +160,7 @@ export const prerender = true;
       } catch (error) {
         console.error(error);
       }
-    }
+    } // Ajustar
 
     function printMovies(
       movies: Moviesbycategory,
