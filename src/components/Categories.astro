@@ -68,17 +68,35 @@ export const prerender = true;
 
     viewMoreMoviesButton.addEventListener("click", async () => {
       currentPage++;
+      const hash = window.location.hash;
 
-      try {
-        const response = await fetch(`/api/page/${currentPage}.json`);
-        if (!response.ok) {
-          throw new Error(`Error fetching data: ${response.statusText}`);
+      if (hash.startsWith("#category")) {
+        const [hashCategory, hashId] = hash.split("=");
+        const [categoryID, categoryName] = hashId.split("-");
+        (async () => {
+          const response = await fetch(
+            `/api/pageId/${categoryID}/${currentPage}.json`
+          );
+
+          if (!response.ok) {
+            throw new Error(`Error fetching data: ${response.statusText}`);
+          }
+          const movies = await response.json();
+
+          printMovies(movies, "", false);
+        })();
+      } else {
+        try {
+          const response = await fetch(`/api/page/${currentPage}.json`);
+          if (!response.ok) {
+            throw new Error(`Error fetching data: ${response.statusText}`);
+          }
+          const data = await response.json();
+
+          printMovies(data, "", false);
+        } catch (error) {
+          console.error(error);
         }
-        const data = await response.json();
-
-        printMovies(data, "", false);
-      } catch (error) {
-        console.error(error);
       }
     });
 
