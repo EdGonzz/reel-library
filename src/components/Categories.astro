@@ -1,12 +1,13 @@
 ---
-import { type CATEGORIES_MOVIES } from "@/types/apiCategoriesMovies";
+import type { CATEGORIES_MOVIES } from "@/types/apiCategoriesMovies";
+import type { Moviesbycategory } from "@/types/apiMovieByCategory";
 import { getCategories } from "@/services/getCategories";
+import { getMoviesByCategory } from "@/services/getMoviesByCategory";
 import CategoriesButtons from "@/components/CategoriesButtons.astro";
 import MovieContainer from "@/components/MovieContainer.astro";
 import SectionContainer from "@/components/SectionContainer.astro";
-import type { Moviesbycategory } from "@/types/apiMovieByCategory";
-import { getMoviesByCategory } from "@/services/getMoviesByCategory";
 import MoviesCard from "@/components/MoviesCard.astro";
+import ViewMoreMovies from "@/components/ViewMoreMovies.astro";
 
 const dataMovies = (await getMoviesByCategory()) as Moviesbycategory;
 const movies = dataMovies.results;
@@ -43,11 +44,7 @@ export const prerender = true;
       ))
     }
   </MovieContainer>
-  <div class="flex justify-center mt-6">
-    <button id="view-more-movies" class="text-lg font-bold">
-      View more movies
-    </button>
-  </div>
+  <ViewMoreMovies />
 </SectionContainer>
 
 <script>
@@ -63,14 +60,18 @@ export const prerender = true;
     const viewMoreMoviesButton = document.getElementById(
       "view-more-movies"
     ) as HTMLElement;
+    const viewMoreContainer = document.getElementById(
+      "view-more-container"
+    ) as HTMLDivElement;
 
     let currentPage = 1;
+    let maxPage = 4;
 
     viewMoreMoviesButton.addEventListener("click", async () => {
       currentPage++;
       const hash = window.location.hash;
 
-      if (hash.startsWith("#category")) {
+      if (hash.startsWith("#category") && currentPage <= maxPage) {
         const [hashCategory, hashId] = hash.split("=");
         const [categoryID, categoryName] = hashId.split("-");
         (async () => {
@@ -85,7 +86,7 @@ export const prerender = true;
 
           printMovies(movies, "", false);
         })();
-      } else {
+      } else if (currentPage <= maxPage) {
         try {
           const response = await fetch(`/api/page/${currentPage}.json`);
           if (!response.ok) {
@@ -98,10 +99,15 @@ export const prerender = true;
           console.error(error);
         }
       }
+
+      if (currentPage === maxPage) {
+        viewMoreContainer?.classList.add("hidden");
+      }
     }); //Ajustar
 
     genresContainer.addEventListener("click", async (event) => {
       const target = event.target as HTMLElement;
+      currentPage = 1;
 
       if (target.tagName === "BUTTON") {
         const categoryID = target.id;
@@ -114,6 +120,12 @@ export const prerender = true;
         } catch (error) {
           console.error(error);
         }
+      }
+
+      if (currentPage === maxPage) {
+        viewMoreContainer?.classList.add("hidden");
+      } else {
+        viewMoreContainer?.classList.remove("hidden");
       }
     }); //Ajustar
 
