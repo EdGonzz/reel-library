@@ -16,7 +16,7 @@ export async function getMoviesByCategory(
   const paramsConfig = {
     with_genres: categoryID,
     page: page,
-    sort_by: "vote_count.desc",
+    include_adult: false,
   } as any;
 
   const params = new URLSearchParams(paramsConfig).toString();
