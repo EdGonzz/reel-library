@@ -42,6 +42,14 @@ body {
   @apply flex flex-row items-center gap-1 text-base font-semibold;
 }
 
+@utility mask-bottom {
+  mask-image: linear-gradient(black 75%, transparent);
+}
+
+@utility mask-top {
+  mask-image: linear-gradient(transparent, black 30%);
+}
+
 .embla {
   width: 100%;
   --slide-spacing: 0.9rem;

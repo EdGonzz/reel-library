@@ -14,8 +14,9 @@ interface Props {
 const { mobileImage, desktopImage, title, average, alt, id } = Astro.props;
 ---
 
-<a
-  class="embla__slide min-h-[290px] hover:scale-y-105 transition-transform"
+<article class="space-y-2 embla__slide min-h-[290px]">
+  <a
+  class="hover:scale-y-105 transition-transform"
   href={`/movie/${id}`}
 >
   <picture class="relative md:h-full md:w-full">
@@ -38,7 +39,7 @@ const { mobileImage, desktopImage, title, average, alt, id } = Astro.props;
     }
   </picture>
   <div
-    class="embla__slide__info md:bg-black/50 md:backdrop-saturate-150 md:text-white md:pl-4 md:rounded-b-2xl md:w-full"
+    class="embla__slide__info p-2 md:bg-black/70 md:text-white md:pl-4 md:rounded-b-2xl md:w-full md:mask-top"
   >
     <h2 class="embla__slide__title">{title}</h2>
     <div
@@ -49,3 +50,5 @@ const { mobileImage, desktopImage, title, average, alt, id } = Astro.props;
     </div>
   </div>
 </a>
+
+</article>
