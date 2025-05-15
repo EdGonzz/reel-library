@@ -42,21 +42,21 @@ function getYear(releaseDate: Date) {
           </div>
         ) : (
           <img
-            class="lazy poster-img embla__slide__img mask-bottom mask-b-from-80%"
+            class="lazy poster-img embla__slide__img"
             data-src={image}
             alt={title}
           />
         )
       }
     </picture>
-    <div
-      class="absolute bottom-0 bg-black p-2 text-white md:pl-4 w-full rounded-b-2xl mask-t-from-50%"
+    <header
+      class="absolute bottom-0 bg-black/70 p-2 text-white md:pl-4 w-full rounded-b-2xl mask-t-from-70%"
     >
       <div class="w-auto flex flex-row gap-2 items-center">
         <Star class="w-4 h-4 text-yellow-400 md:w-5 md:h-5" />
         <p class="embla__slide__average">{`${(average ?? 0).toFixed(1)}`}</p>
       </div>
-    </div>
+    </header>
   </a>
   <header class="flex flex-col">
     <h2 class="embla__slide__title">{title}</h2>
