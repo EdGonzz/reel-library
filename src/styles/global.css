@@ -32,10 +32,6 @@
   --color-ed: #6500bf;
 }
 
-@utility mask-bottom {
-  mask-image: linear-gradient(black 75%, transparent);
-}
-
 body {
   font-family: var(--font-raleway);
   color: var(--text-100);
