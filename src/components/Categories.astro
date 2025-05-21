@@ -55,6 +55,7 @@ export const prerender = true;
   import notFound from "@/assets/svg/notFound.svg?raw";
   import Star from "@/assets/svg/Star.svg?raw";
   import Heart from "@/assets/svg/Heart.svg?raw";
+  import { getLocalStorage } from "@/services/getLocalStorage";
 
   const setupGenresContainer = () => {
     const genresContainer = document.getElementById(
@@ -246,6 +247,10 @@ export const prerender = true;
         const likeButton = document.createElement("button");
         likeButton.className =
           "absolute top-2 right-2 flex justify-center items-center size-8 rounded-full transition-colors bg-black/30 text-white hover:bg-black/50";
+
+        getLocalStorage()[`${movie.id}`]
+          ? likeButton.classList.add("liked")
+          : likeButton.classList.remove("liked");
 
         likeButton.addEventListener("click", (e) => {
           e.preventDefault();

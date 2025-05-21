@@ -75,17 +75,25 @@ function getYear(releaseDate: Date) {
 <script>
   import { setUpLazyLoad } from "@/services/lazyLoad";
   import { checkLocalStorage } from "@/services/checkLS";
+  import { getLocalStorage } from "@/services/getLocalStorage";
 
   const likedButton = document.querySelectorAll(
     "#liked"
   ) as NodeListOf<HTMLButtonElement>;
 
   likedButton.forEach((button) => {
+    const id = button.closest("a")?.getAttribute("data-id");
+
+    getLocalStorage()[`${id}`]
+      ? button.classList.add("liked")
+      : button.classList.remove("liked");
+
     button.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
 
       const id = button.closest("a")?.getAttribute("data-id");
+
       if (id) {
         checkLocalStorage(`${id}`);
       }
