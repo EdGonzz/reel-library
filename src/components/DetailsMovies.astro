@@ -83,7 +83,7 @@ function getMostPopularDirector(credits: Credits) {
     <div class="flex flex-col gap-3">
       <h3 class="text-2xl font-bold">Director</h3>
       <p class="text-lg">
-        {credits ? getMostPopularDirector(credits)[0].name : "unknown"}
+        {credits ? getMostPopularDirector(credits)[0]?.name : "unknown"} //Ajustar
       </p>
     </div>
     <VideoButton movieId={movieId || ""} />
