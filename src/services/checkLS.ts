@@ -1,10 +1,10 @@
 import type { Result } from "@/types/apiMovieByCategory";
 import { callToApi } from "./callToApi";
 
-export function checkLocalStorage(movieID: string) {
-  const movieData = callToApi(
+export async function checkLocalStorage(movieID: string) {
+  const movieData = (await callToApi(
     `api/movieId/${movieID}.json`
-  ) as Promise<Result>;
+  )) as Promise<Result>;
 
   const likedMovies = JSON.parse(localStorage.getItem("liked_movies") || "{}");
 

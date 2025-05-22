@@ -1,0 +1,144 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro";
+---
+
+<SectionContainer title="Favorites" id="favorites-section">
+  <div
+    id="favorites-horizontal"
+    class="flex flex-row gap-4 overflow-x-auto scroll-smooth p-2 scrollbar-none"
+  >
+  </div>
+</SectionContainer>
+
+<script>
+  import type { DetailsMovie } from "@/types/apiDetailsMovies";
+  import { setUpLazyLoad } from "@/services/lazyLoad";
+  import Heart from "@/assets/svg/Heart.svg?raw";
+  import Star from "@/assets/svg/Star.svg?raw";
+  import notFound from "@/assets/svg/notFound.svg?raw";
+  import { getLocalStorage } from "@/services/getLocalStorage";
+  import { checkLocalStorage } from "@/services/checkLS";
+
+  function getYear(releaseDate: Date) {
+    if (releaseDate) {
+      let date = new Date(releaseDate);
+      let year = date.getUTCFullYear();
+
+      return year;
+    }
+  }
+
+  function printMovies(
+    movies: Record<string, DetailsMovie>,
+    CategoriName: string,
+    clean = false
+  ) {
+    const title = document.getElementById("titleMovie") as HTMLElement;
+    const moviesContainer = document.getElementById(
+      "favorites-horizontal"
+    ) as HTMLElement;
+
+    if (clean) {
+      moviesContainer.innerHTML = "";
+      CategoriName.includes("Movie")
+        ? (title.innerHTML = `${CategoriName}`)
+        : (title.innerHTML = `${CategoriName} Movies`);
+    }
+
+    Object.values(movies).map((movie) => {
+      const article = document.createElement("article");
+      article.className = "space-y-2 w-[200px] flex-shrink-0";
+
+      const link = document.createElement("a");
+      link.href = `/movie/${movie.id}`;
+      link.className =
+        "embla__slide rounded-2xl hover:shadow-2xl hover:scale-105 transition-all";
+
+      const picture = document.createElement("picture");
+      picture.className = "h-full w-full";
+
+      if (movie.poster_path === null) {
+        const noImage = document.createElement("div");
+        noImage.setAttribute("aria-label", "Image no found");
+        noImage.setAttribute("role", "img");
+        noImage.className =
+          "w-full h-full rounded-2xl poster-img flex flex-col items-center justify-center gap-4";
+
+        const span = document.createElement("span");
+        span.className = "text-lg md:text-xl xl:text-2xl font-extrabold";
+        span.innerText = "Image no found";
+
+        const svgContainer = document.createElement("div");
+        svgContainer.innerHTML = notFound.toString();
+
+        noImage.append(span, svgContainer);
+        picture.appendChild(noImage);
+      } else {
+        const img = document.createElement("img");
+        img.setAttribute(
+          "data-src",
+          `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+        );
+        img.setAttribute("alt", `${movie.title}`);
+        img.className =
+          "lazy poster-img w-full h-auto rounded-2xl object-cover";
+        picture.appendChild(img);
+      }
+
+      const likeButton = document.createElement("button");
+      likeButton.className =
+        "absolute top-2 right-2 flex justify-center items-center size-8 rounded-full transition-colors bg-black/30 text-white hover:bg-black/50";
+
+      getLocalStorage()[`${movie.id}`]
+        ? likeButton.classList.add("liked")
+        : likeButton.classList.remove("liked");
+
+      likeButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        checkLocalStorage(`${movie.id}`);
+        likeButton.classList.toggle("liked");
+      });
+
+      const svgHeart = document.createElement("div");
+      svgHeart.innerHTML = Heart.toString();
+
+      const header = document.createElement("header");
+      header.className =
+        "absolute bottom-0 bg-black/70 p-2 text-white md:pl-4 w-full rounded-b-2xl mask-top";
+
+      const div = document.createElement("div");
+      div.className = "w-auto flex flex-row gap-2 items-center";
+
+      const average = document.createElement("p");
+      average.className = "embla__slide__average";
+      average.innerText = `${(movie.vote_average ?? 0).toFixed(1)}`;
+
+      const svgContainer = document.createElement("div");
+      svgContainer.innerHTML = Star.toString();
+
+      const headerTitle = document.createElement("header");
+      headerTitle.className = "flex flex-col";
+
+      const h3 = document.createElement("h3");
+      h3.className = "embla__slide__title";
+      h3.innerText = `${movie.title}`;
+
+      const year = document.createElement("p");
+      year.className = "font-semibold text-black/40";
+      year.innerText = `${getYear(movie.release_date)}`;
+
+      likeButton.appendChild(svgHeart);
+      div.append(svgContainer, average);
+      header.append(div);
+      link.append(picture, header, likeButton);
+      headerTitle.append(h3, year);
+      article.append(link, headerTitle);
+      moviesContainer.appendChild(article);
+    });
+    setUpLazyLoad();
+  }
+
+  printMovies(getLocalStorage(), "Favorites", true);
+</script>
