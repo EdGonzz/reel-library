@@ -52,8 +52,8 @@ function getYear(releaseDate: Date) {
       }
     </picture>
     <button
-      id="liked"
       class="absolute top-2 right-2 flex justify-center items-center size-8 rounded-full transition-colors bg-black/30 text-white hover:bg-black/50"
+      data-id={id}
     >
       <Heart class="size-5" />
     </button>
@@ -76,33 +76,37 @@ function getYear(releaseDate: Date) {
   import { setUpLazyLoad } from "@/services/lazyLoad";
   import { checkLocalStorage } from "@/services/checkLS";
   import { getLocalStorage } from "@/services/getLocalStorage";
+  import { printMoviesFav } from "@/services/printerFavoriteSection";
 
-  const likedButton = document.querySelectorAll(
-    "#liked"
-  ) as NodeListOf<HTMLButtonElement>;
+  // Sincroniza todos los botones like con el mismo data-id
+  function updateLikeButtons(movieId: string) {
+    const buttons = document.querySelectorAll(`button[data-id='${movieId}']`);
+    const isLiked = getLocalStorage()[`${movieId}`];
+    buttons.forEach((btn) => {
+      btn.classList.toggle("liked", isLiked);
+    });
+  }
 
-  likedButton.forEach((button) => {
-    const id = button.closest("a")?.getAttribute("data-id");
+  document.addEventListener("astro:page-load", () => {
+    setUpLazyLoad();
+    const likedButtons = document.querySelectorAll(
+      "button[data-id]"
+    ) as NodeListOf<HTMLButtonElement>;
 
-    getLocalStorage()[`${id}`]
-      ? button.classList.add("liked")
-      : button.classList.remove("liked");
+    likedButtons.forEach((button) => {
+      const id = button.getAttribute("data-id");
+      if (!id) return;
+      getLocalStorage()[`${id}`]
+        ? button.classList.add("liked")
+        : button.classList.remove("liked");
 
-    button.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const id = button.closest("a")?.getAttribute("data-id");
-
-      if (id) {
-        checkLocalStorage(`${id}`);
-      }
-
-      button.classList.toggle("liked");
+      button.addEventListener("click", async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        await checkLocalStorage(`${id}`);
+        updateLikeButtons(id);
+        printMoviesFav(getLocalStorage(), true);
+      });
     });
   });
-
-  document.addEventListener("astro:page-load", setUpLazyLoad);
-
-  setUpLazyLoad();
 </script>
